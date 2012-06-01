@@ -1,0 +1,3 @@
+[submodule "Assets/ex"]
+	path = Assets/ex
+	url = https://github.com/jwu/exUnity.git
