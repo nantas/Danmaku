@@ -11,20 +11,16 @@
 
 Shader "ex2D/Alpha Blended" {
     Properties {
-        _MainTex ("Atlas Texture", 2D) = "white" {}
+        _MainTex ("Sprite Texture", 2D) = "white" {}
     }
 
-    SubShader {
-        Tags { 
-            "Queue"="Transparent" 
-            "IgnoreProjector"="True" 
-            "RenderType"="Transparent" 
-        }
-        Cull Off 
-        Lighting Off 
-        ZWrite Off 
-        Fog { Color (0,0,0,0) }
+    Category {
+        Tags { "Queue"="Transparent" "IgnoreProjector"="True" "RenderType"="Transparent" }
         Blend SrcAlpha OneMinusSrcAlpha
+            Cull Off 
+            Lighting Off 
+            ZWrite Off 
+            Fog { Color (0,0,0,0) }
 
         BindChannels {
             Bind "Color", color
@@ -32,9 +28,11 @@ Shader "ex2D/Alpha Blended" {
             Bind "TexCoord", texcoord
         }
 
-        Pass {
-            SetTexture [_MainTex] {
-                combine texture * primary
+        SubShader {
+            Pass {
+                SetTexture [_MainTex] {
+                    combine texture * primary
+                }
             }
         }
     }
