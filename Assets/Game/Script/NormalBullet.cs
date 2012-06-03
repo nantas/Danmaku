@@ -44,7 +44,7 @@ public class NormalBullet: Bullet {
             transform.position.x < -Camera.main.pixelWidth/2 - bulletMng.spawnAreaMargin ||
             transform.position.y > Camera.main.pixelHeight/2 + bulletMng.spawnAreaMargin ||
             transform.position.y < -Camera.main.pixelHeight/2 - bulletMng.spawnAreaMargin) {
-            Game.instance.spawner.DestroyNormalBullet(this);
+            Game.instance.spawner.DestroyBullet(this);
             bulletMng.normalBulletCount -= 1;
         }
 

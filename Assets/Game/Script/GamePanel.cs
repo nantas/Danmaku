@@ -52,6 +52,7 @@ public class GamePanel: MonoBehaviour {
         txtScratch.text = "0";
         txtStart.enabled = false;
         txtStart.text = "Get Ready";
+        // initPlayerPos = Vector3.zero;
     }
 
     // ------------------------------------------------------------------ 
@@ -99,7 +100,7 @@ public class GamePanel: MonoBehaviour {
 
     void HandleInput () {
         // Debug.Log("mouse input!");
-        Vector2 accel = Vector2.zero;
+        Vector3 mappedPos = Vector3.zero;
 
 #if UNITY_IPHONE
         if ( Application.isEditor == false ) {
@@ -110,18 +111,15 @@ public class GamePanel: MonoBehaviour {
                 // press
                 if ( touch.phase == TouchPhase.Began ) {
                     lastWorldMousePos = Camera.main.ScreenToWorldPoint( touch.position );
-                } else if (touch.phase == TouchPhase.Moved || 
-                           touch.phase == TouchPhase.Ended) {
+                    Game.instance.player.InitMapLocation();
+                } else if (touch.phase == TouchPhase.Moved) {
                      worldMousePos = Camera.main.ScreenToWorldPoint ( touch.position );
-                     accel = worldMousePos - lastWorldMousePos;
-                     lastWorldMousePos = worldMousePos;
+                     mappedPos = worldMousePos - lastWorldMousePos;
+                     Game.instance.player.UpdateInputLocation(mappedPos);
+                     return;
+                } else if (touch.phase == TouchPhase.Ended) {
+                    return;
                 }
-                // // release
-                // else if ( touch.phase == TouchPhase.Ended ||
-                //           touch.phase == TouchPhase.Canceled )
-                // {
-
-                // }
             }
         } else {
 #endif
@@ -131,26 +129,29 @@ public class GamePanel: MonoBehaviour {
             if ( Input.GetMouseButtonDown(0) ) {
                 // mouseClickStart = Time.time;
                 lastWorldMousePos = Camera.main.ScreenToWorldPoint ( Input.mousePosition );
+                Game.instance.player.InitMapLocation();
                 startDragging = true;
             }
 
             // press
             if (startDragging) {
                 if ( Input.GetMouseButton(0) ) {
-                    if (Input.mousePosition == lastScreenMousePos) {
-                        accel = Vector2.zero;
-                        Game.instance.player.UpdateAccelVector(accel);
-                        return;
-                    } else {
+                    // if (Input.mousePosition == lastScreenMousePos) {
+                    //     mappedPos = Vector3.zero;
+                    //     Game.instance.player.UpdateInputLocation(mappedPos);
+                    //     return;
+                    // } else {
                         worldMousePos = Camera.main.ScreenToWorldPoint ( Input.mousePosition );
-                        accel = worldMousePos - lastWorldMousePos;
-                        lastWorldMousePos = worldMousePos;
-                    }
-                    lastScreenMousePos = Input.mousePosition;
+                        mappedPos = worldMousePos - lastWorldMousePos;
+                        Game.instance.player.UpdateInputLocation(mappedPos);
+                        return;
+                    // }
+                    // lastScreenMousePos = Input.mousePosition;
                 }
                 // release
                 else if ( Input.GetMouseButtonUp(0) ) {
                     startDragging = false;
+                    return;
                 }
             }
 
@@ -158,7 +159,7 @@ public class GamePanel: MonoBehaviour {
         }
 #endif
 
-        Game.instance.player.UpdateAccelVector(accel);
+        // Game.instance.player.UpdateInputLocation(mappedPos);
     }
 
 

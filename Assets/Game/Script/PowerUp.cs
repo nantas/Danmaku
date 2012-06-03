@@ -1,5 +1,5 @@
 // ======================================================================================
-// File         : Bullet.cs
+// File         : PowerUp.cs
 // Author       : nantas 
 // Last Change  : 06/02/2012 | 21:02:56 PM | Saturday,June
 // Description  : 
@@ -16,22 +16,21 @@ using System.Collections;
 // 
 ///////////////////////////////////////////////////////////////////////////////
 
-public class Bullet: MonoBehaviour {
+public class PowerUp: MonoBehaviour {
 
-
-    public float aimingRange = 0.0f;
+    public int maxBumpCount = 0;
+    public float moveSpeed = 0.0f;
 
     protected Vector2 velocity = Vector2.zero;
-    protected BulletMng bulletMng = null;
-    protected exSprite spBullet;
+    protected exSprite spPowerUp;
+    protected int bumpCount = 0;
 
     // ------------------------------------------------------------------ 
     // Desc: 
     // ------------------------------------------------------------------ 
 
     void Awake() {
-        bulletMng = Game.instance.bulletMng;
-        spBullet = GetComponent<exSprite>();
+        spPowerUp = GetComponent<exSprite>();
     }
 
     // ------------------------------------------------------------------ 
@@ -39,9 +38,10 @@ public class Bullet: MonoBehaviour {
     // ------------------------------------------------------------------ 
 
     public void Inactive() {
-        spBullet.enabled = false;
+        spPowerUp.enabled = false;
         collider.enabled = false;
         enabled = false;
+        bumpCount = 0;
     }
 
     // ------------------------------------------------------------------ 
@@ -49,7 +49,7 @@ public class Bullet: MonoBehaviour {
     // ------------------------------------------------------------------ 
 
     public void Active() {
-        spBullet.enabled = true;
+        spPowerUp.enabled = true;
         collider.enabled = true;
         enabled = true;
     }
@@ -58,24 +58,14 @@ public class Bullet: MonoBehaviour {
     // Desc: 
     // ------------------------------------------------------------------ 
 
-    void OnTriggerEnter( Collider _other ) {
-        if (_other.gameObject.tag == "Player") {
-            _other.GetComponent<Player>().Destroy();
-        } else if (_other.gameObject.tag == "PlayerSkirt" && Game.instance.player.isShielded) {
-            Game.instance.spawner.DestroyBullet(this);
-        }
-
+    protected virtual void OnTriggerEnter( Collider _other ) {
+        // if (_other.gameObject.tag == "Player") {
+        //     _other.GetComponent<Player>().Destroy();
+        // }
     }
 
-    // ------------------------------------------------------------------ 
-    // Desc: 
-    // ------------------------------------------------------------------ 
 
-    void OnTriggerExit ( Collider _other ) {
-        if (_other.gameObject.tag == "PlayerSkirt") {
-            Game.instance.Scratch();
-        }
-    }
 }
+
 
 

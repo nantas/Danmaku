@@ -20,6 +20,7 @@ public class Spawner : MonoBehaviour {
 
     public float bulletPosZ = 0.0f;
     public exGameObjectPool normalBulletPool = new exGameObjectPool();
+    public exGameObjectPool powerUpPool = new exGameObjectPool();
 
     // ------------------------------------------------------------------ 
     // Desc: 
@@ -32,6 +33,14 @@ public class Spawner : MonoBehaviour {
             GameObject normalBulletGO = normalBulletPool.initData[i];
             normalBulletGO.transform.position = new Vector3( 0.0f, 0.0f, bulletPosZ);
             normalBulletGO.GetComponent<NormalBullet>().Inactive();
+        }
+
+        // init powerup pool
+        powerUpPool.Init();
+        for ( int i = 0; i < powerUpPool.initData.Length; ++i ) {
+            GameObject powerUpGO = powerUpPool.initData[i];
+            powerUpGO.transform.position = new Vector3( 0.0f, 0.0f, bulletPosZ);
+            powerUpGO.GetComponent<PowerUp>().Inactive();
         }
 
     }
@@ -47,6 +56,13 @@ public class Spawner : MonoBehaviour {
             normalBulletGO.GetComponent<NormalBullet>().Inactive();
         }
         normalBulletPool.Reset();
+
+        // reset powerup pool
+        for ( int i = 0; i < powerUpPool.initData.Length; ++i ) {
+            GameObject powerUpGO = powerUpPool.initData[i];
+            powerUpGO.GetComponent<PowerUp>().Inactive();
+        }
+        powerUpPool.Reset();
     }
 
     // ------------------------------------------------------------------ 
@@ -61,9 +77,26 @@ public class Spawner : MonoBehaviour {
     // Desc: 
     // ------------------------------------------------------------------ 
 
-    public void DestroyNormalBullet( NormalBullet _normalBullet ) {
+    public void DestroyBullet( Bullet _normalBullet ) {
         _normalBullet.Inactive();
         normalBulletPool.Return(_normalBullet.gameObject);
+    }
+
+    // ------------------------------------------------------------------ 
+    // Desc: 
+    // ------------------------------------------------------------------ 
+
+    public PowerUp SpawnPowerUp( Vector2 _pos ) {
+        return powerUpPool.Request<PowerUp>(_pos);
+    }
+
+    // ------------------------------------------------------------------ 
+    // Desc: 
+    // ------------------------------------------------------------------ 
+
+    public void DestroyPowerUp( PowerUp _powerUp ) {
+        _powerUp.Inactive();
+        powerUpPool.Return(_powerUp.gameObject);
     }
 
 }

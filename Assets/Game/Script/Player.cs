@@ -18,16 +18,27 @@ using System.Collections;
 public class Player : MonoBehaviour {
 
     public exSprite spShip;
-    public float maxSpeed = 0.0f;
-    public float acceleration = 0.0f;
-    public float brake = 0.0f;
+    public exSprite spFX;
+    // public float maxSpeed = 0.0f;
+    public float mapScale = 0.0f;
+    // public float brake = 0.0f;
     public float smooth = 0.0f;
 
     protected bool isAcceptInput = false;
+    [System.NonSerialized] public bool isShielded = false;
 
-    protected Vector2 direction = Vector2.zero;
-    protected Vector2 speed = Vector2.zero;
-    protected Vector2 accelVector = Vector2.zero;
+    // protected Vector2 direction = Vector2.zero;
+    // protected Vector2 speed = Vector2.zero;
+    // protected Vector2 accelVector = Vector2.zero;
+    protected Vector3 initPlayerPos = Vector3.zero;
+
+    // ------------------------------------------------------------------ 
+    // Desc: 
+    // ------------------------------------------------------------------ 
+
+    void Awake() {
+        spFX.enabled = false;
+    }
 
     // ------------------------------------------------------------------ 
     // Desc: 
@@ -43,11 +54,13 @@ public class Player : MonoBehaviour {
     // ------------------------------------------------------------------ 
 
     public void Reset() {
-        accelVector = Vector2.zero;
-        speed = Vector2.zero;
+        // accelVector = Vector2.zero;
+        // speed = Vector2.zero;
         spShip.spanim.Play("idle");
         spShip.enabled = true;
-        transform.position = new Vector3(-100.0f, 0.0f,
+        spFX.enabled = false;
+        isShielded = false;
+        transform.position = new Vector3(0.0f, 0.0f,
                                          transform.position.z);
     }
 
@@ -64,8 +77,38 @@ public class Player : MonoBehaviour {
     // Desc: 
     // ------------------------------------------------------------------ 
 
-    public void UpdateAccelVector( Vector2 _accel ) {
-        accelVector = Vector2.Lerp(accelVector, _accel, Time.deltaTime * smooth);
+    public void InitMapLocation() {
+        initPlayerPos = transform.position;
+    }
+
+    // ------------------------------------------------------------------ 
+    // Desc: 
+    // ------------------------------------------------------------------ 
+
+    public void UpdateInputLocation( Vector3 _mappedPos ) {
+        // accelVector = Vector2.Lerp(accelVector, _accel, Time.deltaTime * smooth);
+        Vector3 dist = _mappedPos * mapScale;
+        Vector2 playerPos = Vector2.Lerp(transform.position, initPlayerPos + dist, Time.deltaTime * smooth);
+        transform.position = new Vector3( playerPos.x, playerPos.y,
+                                          transform.position.z);
+
+        // handle boundary
+        float modX = transform.position.x;
+        float modY = transform.position.y;
+        if (transform.position.x > Screen.width/2) {
+            modX = Screen.width/2;
+        } else if (transform.position.x < -Screen.width/2) {
+            modX = -Screen.width/2;
+        }
+            
+        if (transform.position.y > Screen.height/2) {
+            modY = Screen.height/2;
+        } else if (transform.position.y < Game.rightBoundary) {
+            modY = Game.rightBoundary;
+        }
+
+        transform.position = new Vector3(modX, modY,
+                                             transform.position.z);	
     }
 
     // ------------------------------------------------------------------ 
@@ -74,26 +117,26 @@ public class Player : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-        direction = Vector2.zero;
+        // direction = Vector2.zero;
 
-        // get input direction
-        if (Application.isEditor && isAcceptInput ) {
-            if (Input.GetKey(KeyCode.UpArrow)) {
-                direction += new Vector2(0.0f, 1.0f);
-            }
+        // // get input direction
+        // if (Application.isEditor && isAcceptInput ) {
+        //     if (Input.GetKey(KeyCode.UpArrow)) {
+        //         direction += new Vector2(0.0f, 1.0f);
+        //     }
 
-            if (Input.GetKey(KeyCode.DownArrow)) {
-                direction += new Vector2(0.0f, -1.0f);
-            }
+        //     if (Input.GetKey(KeyCode.DownArrow)) {
+        //         direction += new Vector2(0.0f, -1.0f);
+        //     }
 
-            if (Input.GetKey(KeyCode.LeftArrow)) {
-                direction += new Vector2(-1.0f, 0.0f);
-            }
+        //     if (Input.GetKey(KeyCode.LeftArrow)) {
+        //         direction += new Vector2(-1.0f, 0.0f);
+        //     }
 
-            if (Input.GetKey(KeyCode.RightArrow)) {
-                direction += new Vector2(1.0f, 0.0f);
-            }
-        }
+        //     if (Input.GetKey(KeyCode.RightArrow)) {
+        //         direction += new Vector2(1.0f, 0.0f);
+        //     }
+        // }
 
         // // calculate speed
         // if (direction != Vector2.zero) {
@@ -114,28 +157,33 @@ public class Player : MonoBehaviour {
         //     }
         // }
 
-        speed = accelVector * maxSpeed;
-        // handle movement 
-        transform.Translate( speed.x, speed.y, 0.0f );
+        // speed = accelVector * maxSpeed;
+        // // handle movement 
+        // transform.Translate( speed.x, speed.y, 0.0f );
 
-        // handle boundary
-        float modX = transform.position.x;
-        float modY = transform.position.y;
-        if (transform.position.x > Game.rightBoundary) {
-            modX = Game.rightBoundary;
-        } else if (transform.position.x < -Screen.width/2) {
-            modX = -Screen.width/2;
-        }
-            
-        if (transform.position.y > Screen.height/2) {
-            modY = Screen.height/2;
-        } else if (transform.position.y < -Screen.height/2) {
-            modY = -Screen.height/2;
-        }
 
-        transform.position = new Vector3(modX, modY,
-                                             transform.position.z);	
 	}
+
+    // ------------------------------------------------------------------ 
+    // Desc: 
+    // ------------------------------------------------------------------ 
+
+    public void StartShield(float _duration) {
+        isShielded = true;
+        spFX.enabled = true;
+        spShip.GetComponent<SphereCollider>().radius = 21;
+        Invoke("StopShield", _duration);
+    }
+
+    // ------------------------------------------------------------------ 
+    // Desc: 
+    // ------------------------------------------------------------------ 
+
+    public void StopShield() {
+        isShielded = false;
+        spFX.enabled = false;
+        spShip.GetComponent<SphereCollider>().radius = 19;
+    }
 
     // ------------------------------------------------------------------ 
     // Desc: 

@@ -30,15 +30,7 @@ public class DebugButton: MonoBehaviour {
     // ------------------------------------------------------------------ 
 
     void OnButtonPress () {
-        if (valueControl == ValueControl.Accel) {
-            Game.instance.player.acceleration -= 5f;
-        } else if (valueControl == ValueControl.Brake) {
-            Game.instance.player.acceleration += 5f;
-        } else if (valueControl == ValueControl.SpeedModifier) {
-            Game.instance.player.brake -= 5f;
-        } else if (valueControl == ValueControl.Smooth) {
-            Game.instance.player.acceleration += 5f;
-        }
+
 
     }
 

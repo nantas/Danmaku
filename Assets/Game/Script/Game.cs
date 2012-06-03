@@ -35,7 +35,7 @@ public class Game : FSMBase {
     // Static
     ///////////////////////////////////////////////////////////////////////////////
     public static Game instance = null; 
-    public static float rightBoundary = 280.0f;
+    public static float rightBoundary = -240.0f;
 
     ///////////////////////////////////////////////////////////////////////////////
     // Serialized
@@ -180,7 +180,7 @@ public class Game : FSMBase {
     public override void Reset() {
         spawner.Reset();
         gamePanel.Reset();
-        // bulletMng.Reset();
+        bulletMng.Reset();
         player.Reset();
 
         timer = 0.0f;
@@ -254,6 +254,7 @@ public class Game : FSMBase {
     protected IEnumerator StartGame () {
         yield return new WaitForSeconds(2.0f);
         stateMachine.Send( fsm.Event.NEXT );
+        bulletMng.StartNormalBullet();
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -266,7 +267,6 @@ public class Game : FSMBase {
 
     void EnterMainLoopState ( fsm.State _from, fsm.State _to, fsm.Event _event ) {
         AcceptInput(true);
-        bulletMng.StartNormalBullet();
 
     }
 
@@ -279,6 +279,7 @@ public class Game : FSMBase {
         if (Time.frameCount%60 == 1) {
             bulletMng.UpdateSpeed();
         }
+
     }
 
     // ------------------------------------------------------------------ 
@@ -371,7 +372,31 @@ public class Game : FSMBase {
     // ------------------------------------------------------------------ 
 
     public void Scratch() {
-        Debug.Log("Scratch!");
+        // Debug.Log("Scratch!");
+        scratch += 1;
+        gamePanel.OnScratchUpdate();
+        if (Time.frameCount%2 == 1) {
+            StartSlowMo();
+        }
+    }
+
+    // ------------------------------------------------------------------ 
+    // Desc: 
+    // ------------------------------------------------------------------ 
+
+    void StartSlowMo() {
+        Time.timeScale = 0.5f;
+        Invoke("StopSlowMo", 0.5f);
+        // isSlowMo = true;
+    }
+
+    // ------------------------------------------------------------------ 
+    // Desc: 
+    // ------------------------------------------------------------------ 
+
+    void StopSlowMo() {
+        Time.timeScale = 1.0f;
+        // isSlowMo = false;
     }
 }
 

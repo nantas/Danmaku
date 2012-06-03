@@ -40,6 +40,7 @@ public class BulletMng: MonoBehaviour {
 
     public void Reset() {
         speedLvl = 0;
+        CancelInvoke();
     }
 
     // ------------------------------------------------------------------ 
@@ -53,6 +54,7 @@ public class BulletMng: MonoBehaviour {
         maxSpeed = initMaxSpeed;
         normalBulletCount = 0;
         Invoke("SpawnANormalBullet", interval);
+        Invoke("SpawnShield", 15.0f);
     }
 
     // ------------------------------------------------------------------ 
@@ -82,17 +84,17 @@ public class BulletMng: MonoBehaviour {
         float posY = 0.0f;
         int borderPicker = Random.Range(0, 4);
         if (borderPicker == 0) { //spawn from top
-            posX = Random.Range(-Camera.main.pixelWidth/2 - spawnAreaMargin/2, Camera.main.pixelWidth/2);
-            posY = Camera.main.pixelHeight/2 + spawnAreaMargin/2;
+            posX = Random.Range(-Screen.width/2 - spawnAreaMargin/2, Screen.width/2 + spawnAreaMargin/2);
+            posY = Screen.height/2 + spawnAreaMargin/2;
         } else if (borderPicker == 1) { //spawn from right
-            posX = Camera.main.pixelWidth/2;
-            posY = Random.Range(-Camera.main.pixelHeight/2 - spawnAreaMargin/2, Camera.main.pixelHeight/2 + spawnAreaMargin/2);
+            posX = Screen.width/2 + spawnAreaMargin/2;
+            posY = Random.Range(-Screen.height/2 - spawnAreaMargin/2, Screen.height/2 + spawnAreaMargin/2);
         } else if (borderPicker == 2) { //spawn from bot
-            posX = Random.Range(-Camera.main.pixelWidth/2 - spawnAreaMargin/2, Camera.main.pixelWidth/2);
-            posY = -Camera.main.pixelHeight/2 - spawnAreaMargin/2;
+            posX = Random.Range(-Screen.width/2 - spawnAreaMargin/2, Screen.width/2 + spawnAreaMargin/2);
+            posY = -Screen.height/2;
         } else if (borderPicker == 3) { //spawn from left
-            posX = -Camera.main.pixelWidth/2 - spawnAreaMargin/2;
-            posY = Random.Range(-Camera.main.pixelHeight/2 - spawnAreaMargin/2, Camera.main.pixelHeight/2 + spawnAreaMargin/2); 
+            posX = -Screen.width/2 - spawnAreaMargin/2;
+            posY = Random.Range(-Screen.height/2 - spawnAreaMargin/2, Screen.height/2 + spawnAreaMargin/2);
         }
  
         // if (posX > -Camera.main.pixelWidth/2 - 20.0f && posX < Camera.main.pixelWidth/2 + 20.0f) { 
@@ -120,6 +122,32 @@ public class BulletMng: MonoBehaviour {
             normalBulletCount++;
         }
         Invoke("SpawnANormalBullet", Random.Range(minInterval, maxInterval));
+    }
+
+    // ------------------------------------------------------------------ 
+    // Desc: 
+    // ------------------------------------------------------------------ 
+
+    void SpawnShield() {
+        float posX = 0.0f;
+        float posY = 0.0f;
+        if (Game.instance.player.transform.position.x > 0) {
+            posX = Random.Range(-300.0f, -250.0f);
+        } else {
+            posX = Random.Range(250.0f, 300.0f);
+        }
+
+        if (Game.instance.player.transform.position.y > 0) {
+            posY = Game.rightBoundary;
+        } else {
+            posY = Screen.height/2;
+        }
+
+        PUShield shield = Game.instance.spawner.SpawnPowerUp(new Vector2(posX, posY)) as PUShield;
+        shield.Active();
+        shield.EnterField();
+
+        Invoke("SpawnShield", 15.0f);
     }
 
 }
