@@ -22,7 +22,7 @@ public class Player : MonoBehaviour {
     // public float maxSpeed = 0.0f;
     public float mapScale = 0.0f;
     // public float brake = 0.0f;
-    public float smooth = 0.0f;
+    public float damping = 0.0f;
 
     [System.NonSerialized] public bool isShielded = false;
 
@@ -84,9 +84,9 @@ public class Player : MonoBehaviour {
     // ------------------------------------------------------------------ 
 
     public void UpdateInputLocation( Vector3 _mappedPos ) {
-        // accelVector = Vector2.Lerp(accelVector, _accel, Time.deltaTime * smooth);
+        // accelVector = Vector2.Lerp(accelVector, _accel, Time.deltaTime * damping);
         Vector3 dist = _mappedPos * mapScale;
-        Vector2 playerPos = Vector2.Lerp(transform.position, initPlayerPos + dist, Time.deltaTime * smooth);
+        Vector2 playerPos = Vector2.Lerp(transform.position, initPlayerPos + dist, (Time.deltaTime / Time.timeScale) * damping );
         transform.position = new Vector3( playerPos.x, playerPos.y,
                                           transform.position.z);
 
