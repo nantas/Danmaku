@@ -237,7 +237,7 @@ public class Game : FSMBase {
     // ------------------------------------------------------------------ 
 
     protected void EnterNoBullet( fsm.State _from, fsm.State _to, fsm.Event _event ) {
-        StartCoroutine(StartGame());
+        Invoke ( "StartGame", 2.0f );
     }
     
     // ------------------------------------------------------------------ 
@@ -251,10 +251,8 @@ public class Game : FSMBase {
     // Desc: 
     // ------------------------------------------------------------------ 
 
-    protected IEnumerator StartGame () {
-        yield return new WaitForSeconds(2.0f);
+    protected void StartGame () {
         stateMachine.Send( fsm.Event.NEXT );
-        bulletMng.StartNormalBullet();
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -266,8 +264,8 @@ public class Game : FSMBase {
     // ------------------------------------------------------------------ 
 
     void EnterMainLoopState ( fsm.State _from, fsm.State _to, fsm.Event _event ) {
+        bulletMng.StartNormalBullet();
         AcceptInput(true);
-
     }
 
     // ------------------------------------------------------------------ 

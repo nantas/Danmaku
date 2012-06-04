@@ -133,6 +133,16 @@ public class GamePanel: MonoBehaviour {
                 startDragging = true;
             }
 
+            // DELME: nantas when you read this, remove it { 
+            // jwu comment: I play Cave's game and Shogun (a cave like STG, free to play), all of them are moving
+            // flight use 1:1 touch ratio. when you grab TouchBegan, you will use this point as anchor, and remember current flight
+            // position, the rest of thing is always get distance of touchpoint-anchor, and apply the same distance to srcFlightPos 
+            // to get it to the right place. 
+            // e.g.
+            // result = (touchPoint - touchAnchor) + sourceFlightPos; 
+            // NOTE: touchPoint and touchAnchor will **not** transform from screenPos to worldPos??? need it??? may be I'm wrong.
+            // } DELME end 
+
             // press
             if (startDragging) {
                 if ( Input.GetMouseButton(0) ) {

@@ -24,7 +24,6 @@ public class Player : MonoBehaviour {
     // public float brake = 0.0f;
     public float smooth = 0.0f;
 
-    protected bool isAcceptInput = false;
     [System.NonSerialized] public bool isShielded = false;
 
     // protected Vector2 direction = Vector2.zero;
@@ -69,7 +68,6 @@ public class Player : MonoBehaviour {
     // ------------------------------------------------------------------ 
 
     public void AcceptInput( bool _acceptInput ) {
-        isAcceptInput = _acceptInput;
         enabled = _acceptInput;
     }
 
