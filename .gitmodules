@@ -1,3 +1,6 @@
 [submodule "Assets/ex"]
 	path = Assets/ex
 	url = https://github.com/jwu/exUnity.git
+[submodule "assets/ex"]
+	path = assets/ex
+	url = git://github.com/jwu/exUnity.git
