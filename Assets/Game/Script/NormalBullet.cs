@@ -40,10 +40,10 @@ public class NormalBullet: Bullet {
         //handle movement 
         transform.Translate(dist.x, dist.y, 0.0f);
 
-        if (transform.position.x > Camera.main.pixelWidth/2 + bulletMng.spawnAreaMargin ||
-            transform.position.x < -Camera.main.pixelWidth/2 - bulletMng.spawnAreaMargin ||
-            transform.position.y > Camera.main.pixelHeight/2 + bulletMng.spawnAreaMargin ||
-            transform.position.y < -Camera.main.pixelHeight/2 - bulletMng.spawnAreaMargin) {
+        if (transform.position.x > Game.instance.boundingRight + bulletMng.spawnAreaMargin ||
+            transform.position.x < Game.instance.boundingLeft - bulletMng.spawnAreaMargin ||
+            transform.position.y > Game.instance.boundingTop + bulletMng.spawnAreaMargin ||
+            transform.position.y < Game.instance.boundingBot - bulletMng.spawnAreaMargin) {
             Game.instance.spawner.DestroyBullet(this);
             bulletMng.normalBulletCount -= 1;
         }

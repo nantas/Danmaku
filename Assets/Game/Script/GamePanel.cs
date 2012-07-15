@@ -18,10 +18,12 @@ using System.Collections.Generic;
 
 public class GamePanel: MonoBehaviour {
 
-    public exUIPanel panelGameOver;
+    public PanelGameOver panelGameOver;
     public exSpriteFont txtTime;
-    public exSpriteFont txtScratch;
+    // public exSpriteFont txtScratch;
     public exSpriteFont txtStart;
+    public exSpriteFont txtToken;
+    public ProgressBar powerBar;
 
     protected Vector3 worldMousePos = Vector3.zero;
     protected Vector3 lastWorldMousePos = Vector3.zero;
@@ -34,12 +36,9 @@ public class GamePanel: MonoBehaviour {
     // ------------------------------------------------------------------ 
 
     protected void Awake() {
-        // exUIPanel uiPanel = GetComponent<exUIPanel>();
-        // uiPanel.OnButtonPress += OnButtonPress;
-        // uiPanel.OnButtonRelease += OnButtonRelease;
-        // uiPanel.OnPointerMove += OnPointerMove;
-        txtTime.text = "0";
-        txtScratch.text = "0";
+        txtTime.text = "0.0";
+        // txtScratch.text = "0";
+        txtToken.text = "0";
         txtStart.enabled = false;
     }
 
@@ -48,10 +47,12 @@ public class GamePanel: MonoBehaviour {
     // ------------------------------------------------------------------ 
 
     public void Reset () {
-        txtTime.text = "0";
-        txtScratch.text = "0";
+        txtTime.text = "0.0";
+        txtToken.text = "0";
+        // txtScratch.text = "0";
         txtStart.enabled = false;
         txtStart.text = "Get Ready";
+        powerBar.ratio = 0;
         // initPlayerPos = Vector3.zero;
     }
 
@@ -68,8 +69,8 @@ public class GamePanel: MonoBehaviour {
     // ------------------------------------------------------------------ 
 
     void LateUpdate() {
-        if (Time.frameCount % 30 == 1) {
-            txtTime.text = Mathf.FloorToInt(Game.instance.timer).ToString();
+        if (Time.frameCount % 6 == 1) {
+            txtTime.text = Game.instance.timer.ToString("0.0");
         }
     }
 
@@ -78,7 +79,9 @@ public class GamePanel: MonoBehaviour {
     // ------------------------------------------------------------------ 
 
     public void OnScratchUpdate() {
-        txtScratch.text = Game.instance.scratch.ToString();
+        // txtScratch.text = Game.instance.scratch.ToString();
+        float ratio = Mathf.Min(Game.instance.power/Game.instance.player.maxPower, 1.0f);
+        powerBar.ratio = ratio; 
     }
 
 
@@ -179,6 +182,9 @@ public class GamePanel: MonoBehaviour {
 
     public void ShowGameOver() {
         panelGameOver.transform.position = Vector3.zero;
+        panelGameOver.btnRetry.transform.position = new Vector3 ( Game.instance.transform.position.x,
+                                                                  Game.instance.transform.position.y,
+                                                                  panelGameOver.btnRetry.transform.position.z);
     }
 
     // ------------------------------------------------------------------ 
@@ -186,7 +192,7 @@ public class GamePanel: MonoBehaviour {
     // ------------------------------------------------------------------ 
 
     public void HideGameOver() {
-        panelGameOver.transform.position = new Vector3(1000.0f, 0, 0);
+        panelGameOver.transform.position = new Vector3(0.0f, 1000.0f, 0);
     }
 
 }

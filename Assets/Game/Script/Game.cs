@@ -40,12 +40,18 @@ public class Game : FSMBase {
     ///////////////////////////////////////////////////////////////////////////////
     // Serialized
     ///////////////////////////////////////////////////////////////////////////////
+    
+    public float boundingLeft; 
+    public float boundingRight;
+    public float boundingTop;
+    public float boundingBot;
 
 
     ///////////////////////////////////////////////////////////////////////////////
     // NonSerialized
     ///////////////////////////////////////////////////////////////////////////////
 
+    [System.NonSerialized] public int tokenCollected = 0;
     [System.NonSerialized] public Spawner spawner = null;
     [System.NonSerialized] public Player player = null; 
     [System.NonSerialized] public GamePanel gamePanel = null;
@@ -61,15 +67,15 @@ public class Game : FSMBase {
     }
     protected float timer_ = 0.0f;
 
-    public int scratch {
-        get { return scratch_; }
+    public float power {
+        get { return power_; }
         set {
-            if (value != scratch_) {
-                scratch_ = value;
+            if (value != power_) {
+                power_ = value;
             }
         }
     }
-    protected int scratch_ = 0;
+    protected float power_ = 0;
 
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -184,7 +190,8 @@ public class Game : FSMBase {
         player.Reset();
 
         timer = 0.0f;
-        scratch = 0;
+        power = 0.0f;
+        tokenCollected = 0;
 
         System.GC.Collect();
     }
@@ -371,11 +378,11 @@ public class Game : FSMBase {
 
     public void Scratch() {
         // Debug.Log("Scratch!");
-        scratch += 1;
+        power += 1.0f;
         gamePanel.OnScratchUpdate();
-        if (Time.frameCount%2 == 1) {
-            StartSlowMo();
-        }
+        // if (Time.frameCount%2 == 1) {
+        StartSlowMo();
+        // }
     }
 
     // ------------------------------------------------------------------ 

@@ -19,6 +19,7 @@ public class Player : MonoBehaviour {
 
     public exSprite spShip;
     public exSprite spFX;
+    public float maxPower = 10.0f;
     // public float maxSpeed = 0.0f;
     public float mapScale = 0.0f;
     // public float brake = 0.0f;
@@ -45,7 +46,7 @@ public class Player : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        spShip.spanim.Play("idle");
+        spShip.spanim.Play("move");
 	}
 	
     // ------------------------------------------------------------------ 
@@ -59,7 +60,8 @@ public class Player : MonoBehaviour {
         spShip.enabled = true;
         spFX.enabled = false;
         isShielded = false;
-        transform.position = new Vector3(0.0f, 0.0f,
+        transform.position = new Vector3(Game.instance.transform.position.x,
+                                         Game.instance.transform.position.y,
                                          transform.position.z);
     }
 
@@ -93,16 +95,16 @@ public class Player : MonoBehaviour {
         // handle boundary
         float modX = transform.position.x;
         float modY = transform.position.y;
-        if (transform.position.x > Screen.width/2) {
-            modX = Screen.width/2;
-        } else if (transform.position.x < -Screen.width/2) {
-            modX = -Screen.width/2;
+        if (transform.position.x > Game.instance.boundingRight) {
+            modX = Game.instance.boundingRight;
+        } else if (transform.position.x < Game.instance.boundingLeft) {
+            modX = Game.instance.boundingLeft;
         }
             
-        if (transform.position.y > Screen.height/2) {
-            modY = Screen.height/2;
-        } else if (transform.position.y < Game.rightBoundary) {
-            modY = Game.rightBoundary;
+        if (transform.position.y > Game.instance.boundingTop) {
+            modY = Game.instance.boundingTop;
+        } else if (transform.position.y < Game.instance.boundingBot) {
+            modY = Game.instance.boundingBot;
         }
 
         transform.position = new Vector3(modX, modY,
@@ -169,7 +171,8 @@ public class Player : MonoBehaviour {
     public void StartShield(float _duration) {
         isShielded = true;
         spFX.enabled = true;
-        spShip.GetComponent<SphereCollider>().radius = 21;
+        GetComponent<SphereCollider>().enabled = false;
+        spShip.GetComponent<SphereCollider>().enabled = true;
         Invoke("StopShield", _duration);
     }
 
@@ -180,7 +183,8 @@ public class Player : MonoBehaviour {
     public void StopShield() {
         isShielded = false;
         spFX.enabled = false;
-        spShip.GetComponent<SphereCollider>().radius = 19;
+        GetComponent<SphereCollider>().enabled = true;
+        spShip.GetComponent<SphereCollider>().enabled = false;
     }
 
     // ------------------------------------------------------------------ 

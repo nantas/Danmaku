@@ -1,37 +1,31 @@
 // ======================================================================================
-// File         : DebugButton.cs
+// File         : PanelGameOver.cs
 // Author       : nantas 
-// Last Change  : 02/11/2012 | 00:11:02 AM | Saturday,February
+// Last Change  : 07/15/2012 | 21:47:19 PM | Sunday,July
 // Description  : 
 // ======================================================================================
 
 using UnityEngine;
 using System.Collections;
 
-public class DebugButton: MonoBehaviour {
 
-    public enum ValueControl {
-        Accel,
-        Brake,
-        SpeedModifier,
-        Smooth
-    }
+///////////////////////////////////////////////////////////////////////////////
+// class 
+// 
+// Purpose: 
+// 
+///////////////////////////////////////////////////////////////////////////////
 
+public class PanelGameOver : MonoBehaviour {
 
-    public ValueControl valueControl;
-
-	void Awake () {
-        exUIButton uiButton = GetComponent<exUIButton>();
-        uiButton.OnButtonPress += OnButtonPress;
-	}
+    public exUIButton btnRetry;
 
     // ------------------------------------------------------------------ 
     // Desc: 
     // ------------------------------------------------------------------ 
 
-    void OnButtonPress () {
-
-
+    public void OnRetry() {
+        Game.instance.Restart();
     }
 
 }

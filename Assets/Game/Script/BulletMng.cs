@@ -54,7 +54,7 @@ public class BulletMng: MonoBehaviour {
         maxSpeed = initMaxSpeed;
         normalBulletCount = 0;
         Invoke("SpawnANormalBullet", interval);
-        Invoke("SpawnShield", 15.0f);
+        // Invoke("SpawnShield", 15.0f);
     }
 
     // ------------------------------------------------------------------ 
@@ -84,17 +84,17 @@ public class BulletMng: MonoBehaviour {
         float posY = 0.0f;
         int borderPicker = Random.Range(0, 4);
         if (borderPicker == 0) { //spawn from top
-            posX = Random.Range(-Screen.width/2 - spawnAreaMargin/2, Screen.width/2 + spawnAreaMargin/2);
-            posY = Screen.height/2 + spawnAreaMargin/2;
+            posX = Random.Range(Game.instance.boundingLeft - spawnAreaMargin/2, Game.instance.boundingRight + spawnAreaMargin/2);
+            posY = Game.instance.boundingTop + spawnAreaMargin/2;
         } else if (borderPicker == 1) { //spawn from right
-            posX = Screen.width/2 + spawnAreaMargin/2;
-            posY = Random.Range(-Screen.height/2 - spawnAreaMargin/2, Screen.height/2 + spawnAreaMargin/2);
+            posX = Game.instance.boundingRight + spawnAreaMargin/2;
+            posY = Random.Range(Game.instance.boundingTop - spawnAreaMargin/2, Game.instance.boundingBot + spawnAreaMargin/2);
         } else if (borderPicker == 2) { //spawn from bot
-            posX = Random.Range(-Screen.width/2 - spawnAreaMargin/2, Screen.width/2 + spawnAreaMargin/2);
-            posY = -Screen.height/2;
+            posX = Random.Range(Game.instance.boundingLeft - spawnAreaMargin/2, Game.instance.boundingRight + spawnAreaMargin/2);
+            posY = Game.instance.boundingBot - spawnAreaMargin/2;
         } else if (borderPicker == 3) { //spawn from left
-            posX = -Screen.width/2 - spawnAreaMargin/2;
-            posY = Random.Range(-Screen.height/2 - spawnAreaMargin/2, Screen.height/2 + spawnAreaMargin/2);
+            posX = Game.instance.boundingLeft - spawnAreaMargin/2;
+            posY = Random.Range(Game.instance.boundingTop - spawnAreaMargin/2, Game.instance.boundingBot + spawnAreaMargin/2);
         }
  
         // if (posX > -Camera.main.pixelWidth/2 - 20.0f && posX < Camera.main.pixelWidth/2 + 20.0f) { 
@@ -147,7 +147,7 @@ public class BulletMng: MonoBehaviour {
         shield.Active();
         shield.EnterField();
 
-        Invoke("SpawnShield", 15.0f);
+        // Invoke("SpawnShield", 15.0f);
     }
 
 }
