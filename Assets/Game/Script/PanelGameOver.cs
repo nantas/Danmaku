@@ -28,6 +28,18 @@ public class PanelGameOver : MonoBehaviour {
         Game.instance.Restart();
     }
 
+
+    // ------------------------------------------------------------------ 
+    // Desc: 
+    // ------------------------------------------------------------------ 
+
+    void Update() {
+        if (Input.GetKeyDown(KeyCode.R)) {
+            OnRetry();
+        }
+    }
+
+
 }
 
 

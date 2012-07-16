@@ -166,7 +166,11 @@ public class GamePanel: MonoBehaviour {
                     startDragging = false;
                     return;
                 }
+            } else {
+                Game.instance.player.InitMapLocation();
+                Game.instance.player.UpdateInputLocation(Vector3.zero);
             }
+                
 
 #if UNITY_IPHONE
         }
