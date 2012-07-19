@@ -1,0 +1,450 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<title>BulletScript language reference</title>
+
+<style type="text/css">
+span.code {font-family:monospace} 
+</style>
+
+</head><body>
+<h1>BulletScript language reference</h1>
+
+<a href="#overview">Overview of the system</a><br>
+<a href="#structure">Script Structure</a><br>
+<a href="#reference">Language Reference</a>
+
+<p>
+<hr />
+<p>
+<a name="overview"><h2>Overview of the system</h2></a>
+
+BulletScript emits and (optionally) controls objects.  These objects can be more or less anything, although some things lend themselves better to it than others.  Particles, shapes, bullets, even sound effects are all good candidates.  In order to use BulletScript, the user must create a system which can interface with it.  For each system, a core "type" is declared, and then the user sets BulletScript to interface with this type's system by specifying function callbacks.  The implementation of these callbacks is entirely up to the user, although there will in practice be a general pattern to them.  This
+is discussed in the <a href="Getting Started.html">Getting Started</a> guide.<p>
+Once user systems have been bound to BulletScript, and scripts written and compiled, the user must create some BulletScript objects in order to do any work.  These two objects are <i>emitter</i> and <i>controller</i> and are explained in the next section.  These objects are then updated once a frame, or at whatever interval the user wants.  This will control object emission.  If the user wants BulletScript to control the objects after emission, then for each object, the user must manually call an update function from BulletScript.  This is essentially all the interaction needed to use BulletScript.  The system
+will update controllers and emitters automatically, and the user can choose to have objects controlled by BulletScript with one line of code when they update the objects.
+<p>
+BulletScript by default uses 2d positions: x & y.  If you wish to use 3d coordinates then uncomment <span class="code">BS_Z_DIMENSION</span> in <span class="code">bsConfig.h</span>.  Where x & y coordinates are mentioned, it can be assumed that z is also available/necessary if <span class="code">BS_Z_DIMENSION</span> is defined.
+
+<p>
+<hr />
+<p>
+<a name="structure"><h2>Script structure</h2>
+
+A script contains emitter and controller definitions in any order.  Emitters are the classes which create objects, and controllers are used to control emitters.
+
+<h3>Emitters</h3>
+
+An emitter definition looks like this:
+<pre>
+	emitter <i>emit_name</i>
+	{
+		// 0 or more member variables
+		// 0 or more affector instances
+		// 0 or more functions
+		// 1 or more states
+	}
+</pre>
+
+<h4>Member variables</h4>
+
+Emitters are vaguely similar to classes in object-oriented languages, and as such have a persistent state.  This partially takes the form of variables which persist over the course of the emitter's lifetime.  Member variables must be declared before anything else.  Their declaration is simple:
+<pre>
+	mem_var = 10 * rand(30);
+	speed = g_gravity * 5;
+</pre>
+There are several built-in members: x, y and angle.  Z as well if <span class="code">BS_Z_DIMENSION</span> is defined.  These are read-only to the emitter, and can only be modified by controllers, or in native code.  They are named <span class="code">This_X</span>, <span class="code">This_Y</span>, <span class="code">This_Z</span> and <span class="code">This_Angle</span>.  Member variables may only be used in states.  They may not be used in functions or affector instance arguments, because emitted objects may persist beyond the lifetime of the emitter that created them, at which point any member variables will be inaccessible.
+
+<h4>States</h4>
+
+Everything in the language is built around making emission and subsequent control as flexible and powerful as possible.  An <i>emitter</i> is the core object that performs these tasks.  Emitters contain
+at least one <i>state</i>.  A state is essentially a function which takes no arguments, and which loops back to the beginning once it is complete, rather than returning.  An emitter always has a current state, and when updated, it executes the code until either it changes state or it is told to suspend execution.  A simple state might look like this:
+<pre>
+	Main = state
+	{
+		emit bullet();
+		wait(1);
+	}
+</pre>
+This state will emit a bullet every second, until either the emitter is destroyed, or a controller changes its state (this is discussed later).  The script suspends execution for a second after every emission.  Note that if the wait statement were not there, execution would never stop and the virtual machine would most likely crash or enter an infinite loop.  States can be switched between using the <span class="code">goto</span> statement.  This changes state and immediately starts executing it.
+<pre>
+	Stage1 = state
+	{
+		emit bullet(180);
+		wait(1);
+		goto Stage2;
+	}
+
+	Stage2 = state
+	{
+		emit bullet(135);
+		wait(2);
+		goto Stage1;
+	}
+</pre>
+One can use more control structures to make things more complex:
+<pre>
+	Stage1 = state
+	{
+		// emit bullet at angle 0
+		emit bullet(0);
+		goto Stage2;
+	}
+
+	Stage2 = state
+	{
+		// declare and set local variable
+		i = 0;
+
+		// emit 10 bullets, spaced evenly from 0 to 180 degrees, with an increasing delay between each one
+		while (i < 10)
+		{
+			emit bullet(i * 20);
+			wait(i / 10);
+			i++;
+		}
+
+		// 30% chance that we change state at this point
+		if (rand(10) < 3)
+		{
+			goto Stage1;
+		}
+	}
+</pre>
+
+An emitter always starts in the first defined state.
+
+<h4>Functions</h4>
+
+Emitters can also have special functions, which are declared inline, and must be declared before states.  These are used to control the behaviour of emitted objects.
+<pre>
+	Explode = function(time)
+	{
+		// tell the object to suspend script execution for <i>time</i> seconds.
+		wait(time);
+
+		// emit 10 'explosion particles'
+		i = 0;
+		while (i < 10)
+		{
+			emit bullet();
+			i++;
+		}
+
+		// and tell the object to kill itself.
+		die;
+
+		// at this point, do not do anything which requires the object!  It is alright to set locals, member variables, etc,
+		// but pretty much anything else will probably cause a crash, because the object has just been killed.
+	}
+
+	Stage1 = state
+	{
+		// emit a bullet, telling it to use the Explode function.  Thus, any bullets emitted by this line will die after 5 seconds.
+		emit bullet() : Explode(5);
+		wait(1);
+	}
+</pre>
+An emitted object can have at most one function.  Emitter functions have a normal control flow: when they reach the end of their statement list, they return, and do not loop back like states do.  It is important to note that when a function ends, the emitted object that it is controlling does not get killed.  The only way to kill an object from script is explicitly via the <span class="code">die</span> statement in a function.
+
+<h4>Properties</h4>
+
+Emitted objects can have properties defined.  Properties are values of BulletScript's value type (normally 32-bit float), which can be controlled by BulletScript.  They can be set in one of two ways, either instantly or gradually.  Properties are prefixed with <span class="code">$</span>.
+<pre>
+	Aim = function(dir)
+	{
+		$angle = 10; 			// set 'angle' property to 10
+		$angle = {10 + dir, 2}; 	// set 'angle' property to (10 + dir) over 2 seconds
+		$angle += {5, 3};		// increase 'angle' property by 5 over 2 seconds
+		var = $angle;			// get angle
+	}
+</pre>
+In the case of setting a property over time, subsequent sets will override this command, unless it has completed:
+<pre>
+	$angle = {10, 5};
+	$angle = {20, 4}; // this overrides the first command
+
+	// this is the proper way to do it
+	$angle = {10, 5};
+	wait(5);
+	$angle = {20, 4};
+</pre>
+Properties can only be used in emitter functions.  Apart from their extended 'set value over time' functionality, they can be used in the same way as any normal variable.  The number of properties definable per type is limited due to performance reasons.  The value can be set by changing <span class="code">BS_MAX_PROPERTIES</span> in bsConfig.h.
+There are some built-in properties: <span class="code">$x</span>,
+<span class="code">$y</span>, <span class="code">$angle</span>.
+
+<h4>Affectors and affector instances</h4>
+Affectors are C++ functions supplied by the user which take an object, and a number of arguments.  Each update, the function is run on the object with the arguments.  Affectors are different from emitter functions in that a) the arguments update as necessary over time and b) the function is run in its entirity every update, whereas an emitter function may take several updates to run just the once, and then never again.  Thus, affectors are useful for implementing things such as gravity, homing missiles, etc.  Alternatively they can be used for performance-critical control, where script is just not fast enough.  Affectors may only take a limited number of arguments.  This value is set by <span class="code">BS_MAX_AFFECTOR_ARGS</span> in bsConfig.h.
+<p>
+Thus, in addition to an emitter function, emitted objects can use a number of affector instances as well.  Affector instances are simply a call of the specified affector function, with specific arguments.  They are defined per emitter, and due to performance reasons the number allowed is limited.  Its  value can be set by changing <span class="code">BS_MAX_EMITTER_AFFECTORS</span> in bsConfig.h.  Affector instance declarations must be declared before any functions, and look like this:
+<pre>
+	grav = affector Gravity(9.81);
+</pre>
+This declares <span class="code">grav</span> as an affector instance which can be used in an emit statement.  You can have different-named instances which use the same affector function, with the same or different arguments, although of course the number of arguments must match those required by the C++ affector function.  As mentioned, arguments update, thus if you use member or global variables in an argument, the value of the argument will change whenever the variable changes.  As an example, you could have modifiable gravity, simply by defining a global <span class="code">g_gravity</span>, and an affector
+instance <span class="code">grav = affector Gravity(g_gravity);</span>.  Then all that is required is to modify the global from C++ code.<p>
+Simple examples:
+<pre>
+	emit bullet() : grav;
+	emit bullet() : grav, track, aim_func(10); 
+</pre>
+Using an expression function as an argument will cause the argument to be updated every time, because BulletScript cannot predict the return value of the function.  Like emitter functions, you may not use member variables as arguments to functions.
+
+<h4>Anchors</h4>
+Anchors are the third and final method for controlling emitted objects.  Anchors tie various properties of the object to the emitter that created it.  Anchors are prefixed with <span class="code">&</span>.  The available anchors are:
+<pre>		&x &y &angle &orbit &kill</pre>
+<span class="code">x</span>, <span class="code">y</span> and <span class="code">angle</span> tie the object's position and rotation to the emitter.  They can be used, for instance, to attach beam weapons to ships, or forcefields which rotate to face attacking objects.  <span class="code">orbit</span> is used to keep an object in rotation around the emitter.  <span class="code">kill</span> is a special anchor: by default, when an emitter is destroyed, any anchored objects will be 'de-anchored'.  By using <span class="code">kill</span>, objects are destroyed instead.  This is useful for laser beams, for instance.  Anchors are used similarly to functions and affector instances:
+<pre>
+	emit bullet() : grav, func(1, 2), &angle, &orbit, &kill;
+</pre>
+
+<h3>Controllers</h3>
+
+Controllers are used to control one or more emitter.  They can change their position, angle, member variables (technically, position and angle are member variables), enable or disable them, or force them to wait indefinitely ("suspend").  Controllers are defined in the following form:<p>
+<pre>
+	controller <i>controller_name</i>
+	{
+		<i>member_variable_list</i>
+		<i>emitter_list</i>
+		<i>event_list</i>
+		<i>state_list</i>
+	}
+</pre>
+
+Member variables are defined in the same way as emitter member variables, and are subject to the same restrictions for initialisation.
+<p>
+Emitter variables are instances of named emitters which are to be controlled.  Their declaration is as follows:
+<pre>
+	<i>emitter_var</i> = emitter <i>emit_type</i>;
+	<i>emitter_var</i> = emitter <i>emit_type</i>(<i>constant_list</i>);
+</pre>
+
+The second declaration allows for setting the emitter's member variables on creation.  The values here must be constants, not expressions involving functions or variables.  This is an efficiency consideration.  The only variables that are set are the built-in members: <span class="code">x</span>, <span class="code">y</span>, (<span class="code">z</span>), and <span class="code">angle</span>.  Any extra values are ignored.  Examples:
+<pre>
+	emitter1 = emitter Blaster;
+	emitter2 = emitter Blaster(0, 10, 0); // x offset = 0, y offset = 0, angle offset = 0
+	emitter3 = emitter Laser(1, 2, 3, 4); // value '4' is ignored 
+	emitter4 = emitter Laser(5 + rand()); // error, not constant
+</pre>
+
+<h4>Events</h4>
+Events are used in controllers as a way for the user to communicate with the script.  They are either raised explicitly in code by the user, or in a controller state with the <span class="code">raise</span> keyword.
+<pre>
+	onDie = event()
+	{
+	}
+
+	onHit = event(damage)
+	{
+	}
+
+	Go = state
+	{
+		raise onDie;
+		raise onHit(10);
+	}
+</pre>
+
+Emitter variables are referred to in controller states and events prefixed by <span class="code">$</span>, like properties.  Emitter variable members (that is, member variables of emitter instances) are accessed as follows:
+<pre>
+	$emitter1.m_member = 10;
+	x = $emitter1.This_Angle;
+</pre>
+The similarity to properties extends further.  Emitter members can be interpolated smoothly:
+<pre>
+	$emitter.This_X += {50, 3}; // move emitter along x axis for seconds
+</pre>
+Thus controller states and events can be used to externally modify specific emitters.  This is useful because emitters cannot modify their built-in members themselves.  Controllers have further functionality for controlling emitters:
+<pre>
+	disable <i>emitter_var</i>; // stops emitter1 updating.
+	enable <i>emitter_var</i>; // starts it again.
+</pre>
+
+<h4>Suspend and Signal</h4>
+Controllers may suspend their execution in the following way:
+<pre>
+	suspend;
+	suspend(<i>constant_list</i>);
+</pre>
+Here, the constant arguments are "blocks" which prevent the controller from resuming execution.  If no blocks are given, as in the first example, then the controller suspends indefinitely.  These blocks can be removed with <span class="code">signal</span>.  
+<pre>
+	signal;
+	signal(<i>constant_list</i>);
+</pre>
+The second example removes any of the specified blocks, if they exist on the controller.  If the controller has been suspended indefinitely, both examples will resume it.  Blocks can be added and removed at any time.  Duplicate blocks are effectively ignored: that is, calling:
+<pre>
+	suspend(2, 2);
+	signal(2); // removes both blocks
+</pre>
+If a state is suspended, it can only be signalled to from an event, however <span class="code">suspend</span> can be used from either states or events.  Suspending is useful for waiting upon certain events from native code.  For instance, if you want a controller to do something only after two specific events have occured, you could set it up like this:
+
+<pre>
+	controller Ctrl
+	{
+		gun = emitter Blaster;
+
+		HalfHealth = event
+		{
+			signal(1);
+		}
+
+		OutOfAmmo = event
+		{
+			signal(2);
+		}
+
+		Stage1 = state
+		{
+			suspend(1, 2);
+			// stop all weapons firing
+			disable $gun;			
+		}
+	}
+</pre>
+
+Thus, if this controller is used on an enemy boss, with the native code raising the events when they occur, the controller will disable its guns once the boss has run out of ammo and is at half health.  In other words, suspend/signal is useful for implementing combinatorial logic.
+
+<p>
+<hr />
+<p>
+<a name="reference"><h2>Language Reference</h2></a>
+<h3>Data types</h3>
+BulletScript has one data type.  As such it is an untyped language.  By default, the data type is a 32-bit float, although this can be changed (but it is not recommended that this is done!) by modifying the relevant <span class="code">#define</span> in bsConfig.h.  For the default floating point data
+type, literal values are expressed as:
+<pre>
+	1
+	1.
+	1.2345
+	.2345
+</pre>	
+As long as the number contains at most one decimal point, and only numeric characters, it is valid.
+
+<h3>Expressions</h3>
+Expressions consist of literal values, variables and function calls, combined together with operators.  
+Some example expressions:
+<pre>
+	5
+	12 + var
+	rand(360) + (x / 2) > 100
+	foo(bar(z, 12))
+</pre>
+
+BulletScript uses the following operators.  Operators cannot be overloaded by users.
+<pre>	+ - * / % > < >= <= == != && ||</pre>
+Notes: 
+<list>
+<li>The modulus operator implements fractional modulus, ie <span class="code">fmod()</span>.</li>
+<li>The equivalence operators (<span class="code">> < >= <= == !=</span>) and the logical operators (<span class="code">&& ||</span>) return 1 if the condition is true, and 0 if false.
+</list>
+<p>
+
+<h3>Comments</h3>
+BulletScript uses standard comments: <span class="code">//</span> for single line comments and <span class="code">/* */</span> to enclose multiple-line ones.
+<pre>
+	// single line comment
+	/* multiple
+	   line
+	   comment
+	*/
+</pre>
+
+<h3>Variables</h3>
+Variables do not need special syntax for declaration and are declared as soon as they are used for the first time on the left hand side of an expression.  Member variables exist within the scope of the class which declares them, and global variables are accessible from anywhere within the system.  Global variables may only be declared from code, and not script, and unlike locals and members may be declared constant, and hence read-only to the script.  Variables are assigned expressions
+like so:
+<pre>
+	x = 5;
+</pre>
+There are also other assignment operators:  <span class="code">+= -= *= /= ++ --</span><br>
+These are statements and not expressions.
+<pre>
+	x += 5; 	// ok (x = x + 5)
+	x++;		// ok (x = x + 1)
+	x = y += 5; 	// error
+</pre>
+
+Note: the <span class="code">++ --</span> operators are <i>post-increment</i> only.
+
+<h3>Native Functions</h3>
+Native functions can be bound and used in expressions:
+<pre>
+	<i>function_name</i>(<i>expression_list</i>);
+	<i>value</i> = <i>function_name</i>(<i>expression_list</i>);
+</pre>
+
+For instance:
+<pre>
+	ret = get_value();
+	r = rand(360 * time);
+</pre>
+
+Functions may return a single value, or nothing, and take a list of comma-separated expressions as arguments.
+
+<h3>Conditional statements</h3>
+Conditional statements take the form of an if-else chain.
+<pre>
+	if (<i>expression_statement</i>)
+	{
+		<i>statement_list</i>
+	}
+	else if(<i>expression_statement</i>)
+	{
+		<i>statement_list</i>
+	}
+	else
+	{
+		<i>statement_list</i>
+	}
+</pre>
+Enclosing braces must be used for every block of code, even if it only has one line.
+
+<h3>Iteration statements</h3>
+Iteration is achieved with <span class="code">while</span>:
+<pre>
+	while(<i>expression_statement</i>)
+	{
+		<i>statement_list</i>
+	}
+</pre>
+The list statements is executed as long as the expression evalulates to non-zero.  Example:
+<pre>
+	i = 0;
+	while(i < 10)
+	{
+		// do something
+
+		i++;
+	}
+</pre>
+
+There are two special keywords for iteration statements which control its flow: <span class="code">break</span> and <span class="code">continue</span>.
+<span class="code">break</span> immediately jumps out of the loop and carries on straight after the closing brace.  <span class="code">continue</span>
+jumps forward to the start of the next iteration of the loop.
+
+<h3>Wait statements</h3>
+Wait statements are used to stop processing the script and leave it for a certain period of time.
+<pre>
+	wait(<i>expression_statement</i>);
+</pre>
+This waits for the specified number of seconds.  If the value is less than or equal to zero, it has no effect.
+
+<h3>Emit statements</h3>
+<pre>
+	<i>emit_function</i> <i>emit_type</i> (<i>expression_list</i>) [ : [<i>control_func</i>] [<i>affector_list</i>] [<i>anchor_list</i>] ];
+</pre>
+
+<h3>Die statements</h3>
+<pre>
+	die;
+</pre>
+
+<h3>Controller statements</h3>
+<pre>
+	raise <i>event_name</i>;
+	raise <i>event_name</i>(<i>constant_list</i>);
+	suspend;
+	suspend(<i>constant_list</i>);
+	signal;
+	signal(<i>constant_list</i>);
+
+</pre>
+<p>
+</body>
+</html>

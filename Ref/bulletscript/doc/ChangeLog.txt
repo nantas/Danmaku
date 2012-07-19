@@ -1,0 +1,29 @@
+bulletscript changelog
+----------------------
+
+24/06/10
+o Fixed bug with native function calls generated incorrect bytecode.
+o Fixed bug whereby scripts with more than one emitter definition cleared affector information when they shouldn't.
+
+20/04/10
+o Fixed bug with Emitter::onRelease not clearing itself properly.
+
+11/03/10
+o Fixed bug with Controller emitter members introduced in previous release
+o Tidied up ScriptMachine::interpretCode
+o Removed BC_OP_POS as it is unnecessary.
+o Native functions now return a value denoting the script status.
+
+05/03/10
+o version 1.1 released.
+o Machine::createController now takes position/angle, similar to Machine::createEmitter.
+o Emitter::setPosition and Controller::setPosition functions.
+o Controller emitter members now rotate around Controller origin properly.
+o Fixed builds and moved examples to separate solution file.
+o Removed linux makefile.
+
+10/02/10
+o fixed bug in grammar file which was crashing the debug build.
+
+15/01/10
+o version 1.0 released.
