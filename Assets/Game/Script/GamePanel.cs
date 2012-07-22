@@ -70,7 +70,7 @@ public class GamePanel: MonoBehaviour {
 
     void LateUpdate() {
         if (Time.frameCount % 6 == 1) {
-            txtTime.text = Game.instance.timer.ToString("0.0");
+            txtTime.text = Stage.instance.timer.ToString("0.0");
         }
     }
 
@@ -79,8 +79,8 @@ public class GamePanel: MonoBehaviour {
     // ------------------------------------------------------------------ 
 
     public void OnScratchUpdate() {
-        // txtScratch.text = Game.instance.scratch.ToString();
-        float ratio = Mathf.Min(Game.instance.power/Game.instance.player.maxPower, 1.0f);
+        // txtScratch.text = Stage.instance.scratch.ToString();
+        float ratio = Mathf.Min(Stage.instance.power/Stage.instance.player.maxPower, 1.0f);
         powerBar.ratio = ratio; 
     }
 
@@ -114,11 +114,11 @@ public class GamePanel: MonoBehaviour {
                 // press
                 if ( touch.phase == TouchPhase.Began ) {
                     lastWorldMousePos = Camera.main.ScreenToWorldPoint( touch.position );
-                    Game.instance.player.InitMapLocation();
+                    Stage.instance.player.InitMapLocation();
                 } else if (touch.phase == TouchPhase.Moved) {
                      worldMousePos = Camera.main.ScreenToWorldPoint ( touch.position );
                      mappedPos = worldMousePos - lastWorldMousePos;
-                     Game.instance.player.UpdateInputLocation(mappedPos);
+                     Stage.instance.player.UpdateInputLocation(mappedPos);
                      return;
                 } else if (touch.phase == TouchPhase.Ended) {
                     return;
@@ -132,7 +132,7 @@ public class GamePanel: MonoBehaviour {
             if ( Input.GetMouseButtonDown(0) ) {
                 // mouseClickStart = Time.time;
                 lastWorldMousePos = Camera.main.ScreenToWorldPoint ( Input.mousePosition );
-                Game.instance.player.InitMapLocation();
+                Stage.instance.player.InitMapLocation();
                 startDragging = true;
             }
 
@@ -151,12 +151,12 @@ public class GamePanel: MonoBehaviour {
                 if ( Input.GetMouseButton(0) ) {
                     // if (Input.mousePosition == lastScreenMousePos) {
                     //     mappedPos = Vector3.zero;
-                    //     Game.instance.player.UpdateInputLocation(mappedPos);
+                    //     Stage.instance.player.UpdateInputLocation(mappedPos);
                     //     return;
                     // } else {
                         worldMousePos = Camera.main.ScreenToWorldPoint ( Input.mousePosition );
                         mappedPos = worldMousePos - lastWorldMousePos;
-                        Game.instance.player.UpdateInputLocation(mappedPos);
+                        Stage.instance.player.UpdateInputLocation(mappedPos);
                         return;
                     // }
                     // lastScreenMousePos = Input.mousePosition;
@@ -167,8 +167,8 @@ public class GamePanel: MonoBehaviour {
                     return;
                 }
             } else {
-                Game.instance.player.InitMapLocation();
-                Game.instance.player.UpdateInputLocation(Vector3.zero);
+                Stage.instance.player.InitMapLocation();
+                Stage.instance.player.UpdateInputLocation(Vector3.zero);
             }
                 
 
@@ -176,7 +176,7 @@ public class GamePanel: MonoBehaviour {
         }
 #endif
 
-        // Game.instance.player.UpdateInputLocation(mappedPos);
+        // Stage.instance.player.UpdateInputLocation(mappedPos);
     }
 
 
@@ -186,8 +186,8 @@ public class GamePanel: MonoBehaviour {
 
     public void ShowGameOver() {
         panelGameOver.transform.position = Vector3.zero;
-        panelGameOver.btnRetry.transform.position = new Vector3 ( Game.instance.transform.position.x,
-                                                                  Game.instance.transform.position.y,
+        panelGameOver.btnRetry.transform.position = new Vector3 ( Stage.instance.transform.position.x,
+                                                                  Stage.instance.transform.position.y - 250,
                                                                   panelGameOver.btnRetry.transform.position.z);
     }
 

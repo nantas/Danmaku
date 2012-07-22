@@ -1,0 +1,9 @@
+$mysql_host = "mysql17.000webhost.com";
+$mysql_database = "a4875231_danmaku";
+$mysql_user = "a4875231_nantas";
+$mysql_password = "witch777";
+
+SecretKey = "dm17molika"
+mode1 = "level01"
+mode2 = "level02"
+mode3 = "level03"

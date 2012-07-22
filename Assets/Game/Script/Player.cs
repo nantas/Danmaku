@@ -60,8 +60,8 @@ public class Player : MonoBehaviour {
         spShip.enabled = true;
         spFX.enabled = false;
         isShielded = false;
-        transform.position = new Vector3(Game.instance.transform.position.x,
-                                         Game.instance.transform.position.y,
+        transform.position = new Vector3(Stage.instance.transform.position.x,
+                                         Stage.instance.transform.position.y,
                                          transform.position.z);
     }
 
@@ -95,16 +95,16 @@ public class Player : MonoBehaviour {
         // handle boundary
         float modX = transform.position.x;
         float modY = transform.position.y;
-        if (transform.position.x > Game.instance.boundingRight) {
-            modX = Game.instance.boundingRight;
-        } else if (transform.position.x < Game.instance.boundingLeft) {
-            modX = Game.instance.boundingLeft;
+        if (transform.position.x > Stage.instance.boundingRight) {
+            modX = Stage.instance.boundingRight;
+        } else if (transform.position.x < Stage.instance.boundingLeft) {
+            modX = Stage.instance.boundingLeft;
         }
             
-        if (transform.position.y > Game.instance.boundingTop) {
-            modY = Game.instance.boundingTop;
-        } else if (transform.position.y < Game.instance.boundingBot) {
-            modY = Game.instance.boundingBot;
+        if (transform.position.y > Stage.instance.boundingTop) {
+            modY = Stage.instance.boundingTop;
+        } else if (transform.position.y < Stage.instance.boundingBot) {
+            modY = Stage.instance.boundingBot;
         }
 
         transform.position = new Vector3(modX, modY,
@@ -194,7 +194,7 @@ public class Player : MonoBehaviour {
     public void Destroy() {
         spShip.spanim.Play("destroy");
         AcceptInput(false);
-        Game.instance.GameOver();
+        Stage.instance.GameOver();
     }
 
 }

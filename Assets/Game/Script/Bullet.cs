@@ -30,7 +30,7 @@ public class Bullet: MonoBehaviour {
     // ------------------------------------------------------------------ 
 
     void Awake() {
-        bulletMng = Game.instance.bulletMng;
+        bulletMng = Stage.instance.bulletMng;
         spBullet = GetComponent<exSprite>();
     }
 
@@ -61,8 +61,8 @@ public class Bullet: MonoBehaviour {
     void OnTriggerEnter( Collider _other ) {
         if (_other.gameObject.tag == "Player") {
             _other.GetComponent<Player>().Destroy();
-        } else if (_other.gameObject.tag == "PlayerSkirt" && Game.instance.player.isShielded) {
-            Game.instance.spawner.DestroyBullet(this);
+        } else if (_other.gameObject.tag == "PlayerSkirt" && Stage.instance.player.isShielded) {
+            Stage.instance.spawner.DestroyBullet(this);
         }
 
     }
@@ -73,7 +73,7 @@ public class Bullet: MonoBehaviour {
 
     void OnTriggerExit ( Collider _other ) {
         if (_other.gameObject.tag == "PlayerSkirt") {
-            Game.instance.Scratch();
+            Stage.instance.Scratch();
         }
     }
 }

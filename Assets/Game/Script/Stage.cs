@@ -1,5 +1,5 @@
 // ======================================================================================
-// File         : Game.cs
+// File         : Stage.cs
 // Author       : nantas 
 // Last Change  : 06/02/2012 | 14:45:58 PM | Saturday,June
 // Description  : 
@@ -17,7 +17,7 @@ using System.Collections.Generic;
 // 
 ///////////////////////////////////////////////////////////////////////////////
 
-public class Game : FSMBase {
+public class Stage : FSMBase {
 
     ///////////////////////////////////////////////////////////////////////////////
     // EventType
@@ -34,7 +34,7 @@ public class Game : FSMBase {
     ///////////////////////////////////////////////////////////////////////////////
     // Static
     ///////////////////////////////////////////////////////////////////////////////
-    public static Game instance = null; 
+    public static Stage instance = null; 
     public static float rightBoundary = -240.0f;
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -46,6 +46,7 @@ public class Game : FSMBase {
     public float boundingTop;
     public float boundingBot;
 
+    // public HighScoreBoard hsBoard;
 
     ///////////////////////////////////////////////////////////////////////////////
     // NonSerialized
@@ -326,6 +327,7 @@ public class Game : FSMBase {
         AcceptInput(false);
         gamePanel.ShowGameOver(); 
         bulletMng.StopNormalBullet();
+        gamePanel.panelGameOver.ShowNamePrompt(true);
     }
 
     // ------------------------------------------------------------------ 
