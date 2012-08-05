@@ -28,6 +28,7 @@ public class PanelGameOver : MonoBehaviour {
     // ------------------------------------------------------------------ 
 
     public void OnRetry() {
+        ShowNamePrompt(false);
         Stage.instance.Restart();
     }
 
@@ -76,6 +77,7 @@ public class PanelGameOver : MonoBehaviour {
                     GlobalSettings.instance.playerProfile.playerName = m_player_name;
                     SubmitAndShowScore(m_player_name);
                     GlobalSettings.instance.gameProgress.SavePlayerProfile();
+                    ShowNamePrompt(false);
                 // }
             }
         }

@@ -222,6 +222,15 @@ public class Stage : FSMBase {
         stateMachine.Send( (int)EventType.Reset );
     }
 
+    // ------------------------------------------------------------------ 
+    // Desc: 
+    // ------------------------------------------------------------------ 
+
+    public void Pause() {
+        //TODO
+        // stateMachine.Send( (int)EventType.Pause );
+    }
+
     ///////////////////////////////////////////////////////////////////////////////
     //
     ///////////////////////////////////////////////////////////////////////////////
@@ -380,10 +389,14 @@ public class Stage : FSMBase {
 
     public void Scratch() {
         // Debug.Log("Scratch!");
-        power += 1.0f;
+        power += 5.0f;
         gamePanel.OnScratchUpdate();
         // if (Time.frameCount%2 == 1) {
         StartSlowMo();
+        if (power >= player.maxPower) {
+            power = player.maxPower;
+            PowerMaxed();
+        }
         // }
     }
 
@@ -405,6 +418,15 @@ public class Stage : FSMBase {
         Time.timeScale = 1.0f;
         // isSlowMo = false;
     }
+
+    // ------------------------------------------------------------------ 
+    // Desc: 
+    // ------------------------------------------------------------------ 
+
+    void PowerMaxed() {
+        gamePanel.PowerMaxed();
+    }
+
 }
 
 

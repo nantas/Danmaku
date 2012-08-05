@@ -18,6 +18,7 @@ using System.Collections.Generic;
 
 public class GamePanel: MonoBehaviour {
 
+    public BtnPower btnPower;
     public PanelGameOver panelGameOver;
     public exSpriteFont txtTime;
     // public exSpriteFont txtScratch;
@@ -40,6 +41,7 @@ public class GamePanel: MonoBehaviour {
         // txtScratch.text = "0";
         txtToken.text = "0";
         txtStart.enabled = false;
+        btnPower.Deactive();
     }
 
     // ------------------------------------------------------------------ 
@@ -96,6 +98,25 @@ public class GamePanel: MonoBehaviour {
         yield return new WaitForSeconds(1.0f);
         txtStart.enabled = false;
     }
+
+    // ------------------------------------------------------------------ 
+    // Desc: 
+    // ------------------------------------------------------------------ 
+
+    public void PowerMaxed() {
+        btnPower.Active();
+    }
+
+    // ------------------------------------------------------------------ 
+    // Desc: 
+    // ------------------------------------------------------------------ 
+
+    public void PowerRelease() {
+        btnPower.Deactive();
+        Stage.instance.power = 0.0f;
+        OnScratchUpdate();
+    }
+
 
     // ------------------------------------------------------------------ 
     // Desc: 

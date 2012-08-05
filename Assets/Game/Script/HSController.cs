@@ -69,7 +69,7 @@ public class HSController : MonoBehaviour
         // Post the URL to the site and create a download object to get the result.
         WWW hs_post = new WWW(post_url);
         //yield return hs_post; // Wait until the download is done
-        int tryTimes = 300;
+        // int tryTimes = 300;
         while (!hs_post.isDone) {
             // if (tryTimes <= 0) {
             //     Debug.Log("connection over time, no score submitted.");
