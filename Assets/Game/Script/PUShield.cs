@@ -28,7 +28,7 @@ public class PUShield: PowerUp {
     protected override void OnTriggerEnter( Collider _other ) {
         if (_other.gameObject.tag == "Player") {
             _other.GetComponent<Player>().StartShield(duration);
-            Game.instance.spawner.DestroyPowerUp(this);
+            Stage.instance.spawner.DestroyPowerUp(this);
         }
     }
 
@@ -73,8 +73,8 @@ public class PUShield: PowerUp {
             modY = Screen.height/2;
             velocity = new Vector2( velocity.x, -velocity.y );
             hasBump = true;
-        } else if (transform.position.y < Game.rightBoundary) {
-            modY = Game.rightBoundary;
+        } else if (transform.position.y < Stage.rightBoundary) {
+            modY = Stage.rightBoundary;
             velocity = new Vector2( velocity.x, -velocity.y );
             hasBump = true;
         }
@@ -85,7 +85,7 @@ public class PUShield: PowerUp {
         if (hasBump) {
             bumpCount++;
             if (bumpCount > maxBumpCount) {
-                Game.instance.spawner.DestroyPowerUp(this);
+                Stage.instance.spawner.DestroyPowerUp(this);
             }
         }
 

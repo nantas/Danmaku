@@ -1,17 +1,20 @@
 // ======================================================================================
 // File         : Game.cs
-// Author       : nantas 
-// Last Change  : 06/02/2012 | 14:45:58 PM | Saturday,June
+// Author       : Wu Jie 
+// Last Change  : 06/20/2012 | 01:28:18 AM | Wednesday,June
 // Description  : 
 // ======================================================================================
+
+///////////////////////////////////////////////////////////////////////////////
+// usings
+///////////////////////////////////////////////////////////////////////////////
 
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
-
 ///////////////////////////////////////////////////////////////////////////////
-// class 
+// class AssetMng
 // 
 // Purpose: 
 // 
@@ -19,64 +22,60 @@ using System.Collections.Generic;
 
 public class Game : FSMBase {
 
-    ///////////////////////////////////////////////////////////////////////////////
-    // EventType
-    ///////////////////////////////////////////////////////////////////////////////
-
     public enum EventType {
-        GameOver = fsm.Event.USER_FIELD + 1,
-        Reset,
-        Restart,
-        Resume,
-        Pause
+        LoadStage = fsm.Event.USER_FIELD + 1,
+        ShowStage,
+        QuitApp,
     }
 
+    public class LoadStageEvent : fsm.Event {
+        public string scene;
+
+        public LoadStageEvent ( string _sceneName ) 
+            : base ( (int)EventType.LoadStage )
+        {
+            scene = _sceneName;
+        }
+    } 
+
     ///////////////////////////////////////////////////////////////////////////////
-    // Static
+    // static variables
     ///////////////////////////////////////////////////////////////////////////////
+
     public static Game instance = null; 
-    public static float rightBoundary = -240.0f;
+    public static GlobalSettings settings = null; 
+    public static bool isTestStage { get { return instance == null; } }
 
-    ///////////////////////////////////////////////////////////////////////////////
-    // Serialized
-    ///////////////////////////////////////////////////////////////////////////////
-    
-    public float boundingLeft; 
-    public float boundingRight;
-    public float boundingTop;
-    public float boundingBot;
+    // ------------------------------------------------------------------ 
+    // Desc: 
+    // ------------------------------------------------------------------ 
 
-
-    ///////////////////////////////////////////////////////////////////////////////
-    // NonSerialized
-    ///////////////////////////////////////////////////////////////////////////////
-
-    [System.NonSerialized] public int tokenCollected = 0;
-    [System.NonSerialized] public Spawner spawner = null;
-    [System.NonSerialized] public Player player = null; 
-    [System.NonSerialized] public GamePanel gamePanel = null;
-    [System.NonSerialized] public BulletMng bulletMng = null;
-
-    public float timer {
-        get { return timer_; }
-        set {
-            if (value != timer_) {
-                timer_ = value;
-            }
+    public static void LoadSettings () {
+        if ( settings == null ) {
+            GameObject settingsPrefab = Resources.Load ( "prefab/settings", typeof(GameObject) ) as GameObject;
+            GameObject settingsGO = GameObject.Instantiate( settingsPrefab, Vector3.zero, Quaternion.identity ) as GameObject;
+            settings = settingsGO.GetComponent<GlobalSettings>();
         }
     }
-    protected float timer_ = 0.0f;
 
-    public float power {
-        get { return power_; }
-        set {
-            if (value != power_) {
-                power_ = value;
-            }
+    // ------------------------------------------------------------------ 
+    // Desc: 
+    // ------------------------------------------------------------------ 
+
+    static public void LoadStage ( string _sceneName ) {
+        if ( isTestStage ) {
+            Debug.LogWarning ( "You can not change stage in test stage environment" );
         }
-    }
-    protected float power_ = 0;
+        else {
+            instance.stateMachine.Send( new LoadStageEvent(_sceneName) );
+        }
+    } 
 
+    ///////////////////////////////////////////////////////////////////////////////
+    // properties
+    ///////////////////////////////////////////////////////////////////////////////
+
+    // public LoadingIndicator loadingIndicator;
 
     ///////////////////////////////////////////////////////////////////////////////
     // functions
@@ -92,319 +91,161 @@ public class Game : FSMBase {
         // init states 
         // ======================================================== 
 
-        fsm.State getReady = new fsm.State( "getReady", stateMachine );
-        getReady.onEnter += EnterGetReady;
+        fsm.State launch = new fsm.State( "launch", stateMachine );
+        launch.onEnter += EnterLaunchState;
+        launch.onExit += ExitLaunchState;
 
-        fsm.State noBullet = new fsm.State( "noBullet", stateMachine );
-        noBullet.onEnter += EnterNoBullet;
-        noBullet.onExit += ExitNoBullet;
+        fsm.State loading = new fsm.State( "loading", stateMachine );
+        loading.onEnter += EnterLoadingState;
+        loading.onExit += ExitLoadingState;
 
-        fsm.State mainLoop = new fsm.State( "mainLoop", stateMachine );
-        mainLoop.onEnter += EnterMainLoopState;
-        mainLoop.onAction += UpdateMainLoopState;
-        mainLoop.mode = fsm.State.Mode.Parallel;
-
-            fsm.State normalBullet = new fsm.State( "normalBullet", mainLoop );
-            normalBullet.onAction += UpdateNormalBullet;
-
-        fsm.State pause = new fsm.State( "pause", stateMachine );
-        pause.onEnter += EnterPauseState;
-        pause.onExit += ExitPauseState;
-
-        fsm.State gameOver = new fsm.State( "gameOver", stateMachine );
-        gameOver.onEnter += EnterGameOverState;
-        gameOver.onAction += UpdateGameOverState;
-
-        fsm.State restart = new fsm.State( "restart", stateMachine );
-        restart.onEnter += EnterRestartState;
-        restart.onExit += ExitRestartState;
+        fsm.State stage = new fsm.State( "stage", stateMachine );
+        stage.onEnter += EnterStageState;
+        stage.onExit += ExitStageState;
 
         // ======================================================== 
         // setup transitions 
         // ======================================================== 
 
-        getReady.Add<fsm.EventTransition> ( noBullet, fsm.Event.NEXT );
+        launch.Add<fsm.EventTransition> ( stage, (int)EventType.ShowStage );
 
-        noBullet.Add<fsm.EventTransition> ( mainLoop, fsm.Event.NEXT );
+        loading.Add<fsm.EventTransition> ( stage, (int)EventType.ShowStage );
 
-        mainLoop.Add<fsm.EventTransition> ( gameOver, (int)EventType.GameOver );
-        mainLoop.Add<fsm.EventTransition> ( restart, (int)EventType.Reset );
-        mainLoop.Add<fsm.EventTransition> ( pause, (int)EventType.Pause );
+        stage.Add<fsm.EventTransition> ( loading, (int)EventType.LoadStage );
+    }
 
-        pause.Add<fsm.EventTransition> ( mainLoop, (int)EventType.Resume );
-        pause.Add<fsm.EventTransition> ( restart, (int)EventType.Reset );
+    // ------------------------------------------------------------------ 
+    // Desc: 
+    // ------------------------------------------------------------------ 
 
-        gameOver.Add<fsm.EventTransition> ( restart, (int)EventType.Reset );
+    protected new void Awake () {
+        if ( instance != null )
+            return;
 
-        restart.Add<fsm.EventTransition> ( getReady, (int)EventType.Restart );
+        instance = this;
+        LoadSettings();
 
         //
-        stateMachine.initState = getReady;
-        // stateMachine.logDebugInfo = true;
+        // loadingIndicator.gameObject.SetActiveRecursively(false);
 
-    }
-
-    // ------------------------------------------------------------------ 
-    // Desc: 
-    // ------------------------------------------------------------------ 
-
-    protected new void Awake() {
-        base.Awake();
-
+        //
         Application.targetFrameRate = 60;
+        DontDestroyOnLoad(gameObject);
+        base.Awake();
+    }
 
-        if (instance == null) {
-            instance = this;
+    // ------------------------------------------------------------------ 
+    // Desc: 
+    // ------------------------------------------------------------------ 
+
+    void Start () {
+        stateMachine.Start();
+    }
+
+    // ------------------------------------------------------------------ 
+    // Desc: 
+    // ------------------------------------------------------------------ 
+
+    void Update () {
+        stateMachine.Update();
+    }
+
+    // ------------------------------------------------------------------ 
+    // Desc: 
+    // ------------------------------------------------------------------ 
+
+    void OnApplicationQuit () {
+        if ( Stage.instance != null ) {
+            Stage.instance.Pause();
+            // Stage.instance.SaveBattle(); // TODO: still have problem when saving GridStatus
         }
+    }
 
-        spawner = GetComponent<Spawner>();
-        player = FindObjectOfType( typeof (Player) ) as Player;
-        gamePanel = FindObjectOfType (typeof(GamePanel)) as GamePanel;
-        if ( gamePanel == null ) {
-            Debug.LogError ( "Can't find GamePanel in the scene" );
+    ///////////////////////////////////////////////////////////////////////////////
+    // launch state
+    ///////////////////////////////////////////////////////////////////////////////
+
+    // ------------------------------------------------------------------ 
+    // Desc: 
+    // ------------------------------------------------------------------ 
+
+    void EnterLaunchState ( fsm.State _from, fsm.State _to, fsm.Event _event ) {
+        Application.LoadLevel( "MainMenu" );
+        stateMachine.Send( (int)EventType.ShowStage );
+    }
+
+    // ------------------------------------------------------------------ 
+    // Desc: 
+    // ------------------------------------------------------------------ 
+
+    void ExitLaunchState ( fsm.State _from, fsm.State _to, fsm.Event _event ) {
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////
+    // loading state
+    ///////////////////////////////////////////////////////////////////////////////
+
+    // ------------------------------------------------------------------ 
+    // Desc: 
+    // ------------------------------------------------------------------ 
+
+    void EnterLoadingState ( fsm.State _from, fsm.State _to, fsm.Event _event ) {
+        LoadStageEvent e = _event as LoadStageEvent;
+        if ( e != null ) {
+            StartCoroutine( StartLoading( e.scene, 1.0f ) );
         }
-        bulletMng = FindObjectOfType (typeof(BulletMng)) as BulletMng;
-        spawner.Init();
-
     }
 
     // ------------------------------------------------------------------ 
     // Desc: 
     // ------------------------------------------------------------------ 
 
-    protected void Start() {
-        System.GC.Collect();
-        if (stateMachine != null) {
-            stateMachine.Start();
-        }
+    void ExitLoadingState ( fsm.State _from, fsm.State _to, fsm.Event _event ) {
+        // loadingIndicator.gameObject.SetActiveRecursively(false);
     }
 
     // ------------------------------------------------------------------ 
     // Desc: 
     // ------------------------------------------------------------------ 
 
-    public override void Reset() {
-        spawner.Reset();
-        gamePanel.Reset();
-        bulletMng.Reset();
-        player.Reset();
+    IEnumerator StartLoading( string _sceneName, float _delay ) {
+        // loadingIndicator.gameObject.SetActiveRecursively(true);
+        // Animation animLoading = loadingIndicator.animation;
+        // animLoading.Play("loadingShowUp");
 
-        timer = 0.0f;
-        power = 0.0f;
-        tokenCollected = 0;
+        yield return new WaitForSeconds(_delay);
 
-        System.GC.Collect();
-    }
-
-    // ------------------------------------------------------------------ 
-    // Desc: 
-    // ------------------------------------------------------------------ 
-
-    protected void Update () {
-        if ( stateMachine != null )
-            stateMachine.Update();
-    }
-
-    // ------------------------------------------------------------------ 
-    // Desc: 
-    // ------------------------------------------------------------------ 
-
-    public void GameOver() {
-        stateMachine.Send( (int)EventType.GameOver );
-    }
-
-    // ------------------------------------------------------------------ 
-    // Desc: 
-    // ------------------------------------------------------------------ 
-
-    public void Restart() {
-        stateMachine.Send( (int)EventType.Reset );
+        Application.LoadLevel(_sceneName);
+        stateMachine.Send( (int)EventType.ShowStage );
     }
 
     ///////////////////////////////////////////////////////////////////////////////
-    //
+    // stage state
     ///////////////////////////////////////////////////////////////////////////////
 
     // ------------------------------------------------------------------ 
     // Desc: 
     // ------------------------------------------------------------------ 
 
-    void EnterGetReady( fsm.State _from, fsm.State _to, fsm.Event _event ) {
-        if (_event.id == (int)EventType.Restart) {
-            Reset();
-        }
+    IEnumerator DelayInit () {
+        yield return 1; // NOTE: this will wait for all scene Awake been called, so that loadingIndicator can get Camera.main
+        // loadingIndicator.Init();
+    } 
 
-        StartCoroutine(gamePanel.ShowStart());
-        AcceptInput(false);
-        stateMachine.Send( fsm.Event.NEXT );
+    // ------------------------------------------------------------------ 
+    // Desc: 
+    // ------------------------------------------------------------------ 
+
+    void EnterStageState ( fsm.State _from, fsm.State _to, fsm.Event _event ) {
+        StartCoroutine( DelayInit() );
     }
 
     // ------------------------------------------------------------------ 
     // Desc: 
     // ------------------------------------------------------------------ 
 
-    protected void EnterNoBullet( fsm.State _from, fsm.State _to, fsm.Event _event ) {
-        Invoke ( "StartGame", 2.0f );
-    }
-    
-    // ------------------------------------------------------------------ 
-    // Desc: 
-    // ------------------------------------------------------------------ 
-
-    protected void ExitNoBullet( fsm.State _from, fsm.State _to, fsm.Event _event ) {
-    }
-
-    // ------------------------------------------------------------------ 
-    // Desc: 
-    // ------------------------------------------------------------------ 
-
-    protected void StartGame () {
-        stateMachine.Send( fsm.Event.NEXT );
-    }
-
-    ///////////////////////////////////////////////////////////////////////////////
-    // Main Loop State
-    ///////////////////////////////////////////////////////////////////////////////
-
-    // ------------------------------------------------------------------ 
-    // Desc: 
-    // ------------------------------------------------------------------ 
-
-    void EnterMainLoopState ( fsm.State _from, fsm.State _to, fsm.Event _event ) {
-        bulletMng.StartNormalBullet();
-        AcceptInput(true);
-    }
-
-    // ------------------------------------------------------------------ 
-    // Desc: 
-    // ------------------------------------------------------------------ 
-
-    protected void UpdateMainLoopState ( fsm.State _curState ) {
-        timer += Time.deltaTime;
-        if (Time.frameCount%60 == 1) {
-            bulletMng.UpdateSpeed();
-        }
-
-    }
-
-    // ------------------------------------------------------------------ 
-    // Desc: 
-    // ------------------------------------------------------------------ 
-
-    protected void UpdateNormalBullet ( fsm.State _curState ) {
-    }
-
-    ///////////////////////////////////////////////////////////////////////////////
-    // Pause state
-    ///////////////////////////////////////////////////////////////////////////////
-
-    // ------------------------------------------------------------------ 
-    // Desc: 
-    // ------------------------------------------------------------------ 
-
-    protected virtual void EnterPauseState ( fsm.State _from, fsm.State _to, fsm.Event _event ) {
-        AcceptInput(false);
-    }
-
-    // ------------------------------------------------------------------ 
-    // Desc: 
-    // ------------------------------------------------------------------ 
-
-    protected virtual void ExitPauseState ( fsm.State _from, fsm.State _to, fsm.Event _event ) {
-        AcceptInput(true);
-    }
-
-    ///////////////////////////////////////////////////////////////////////////////
-    // GameOver state 
-    ///////////////////////////////////////////////////////////////////////////////
-
-    // ------------------------------------------------------------------ 
-    // Desc: 
-    // ------------------------------------------------------------------ 
-
-    protected void EnterGameOverState ( fsm.State _from, fsm.State _to, fsm.Event _event ) {
-        AcceptInput(false);
-        gamePanel.ShowGameOver(); 
-        bulletMng.StopNormalBullet();
-    }
-
-    // ------------------------------------------------------------------ 
-    // Desc: 
-    // ------------------------------------------------------------------ 
-
-    protected void UpdateGameOverState ( fsm.State _curState ) {
-    }
-
-    ///////////////////////////////////////////////////////////////////////////////
-    // Restart state
-    ///////////////////////////////////////////////////////////////////////////////
-
-    // ------------------------------------------------------------------ 
-    // Desc: 
-    // ------------------------------------------------------------------ 
-
-    protected void EnterRestartState ( fsm.State _from, fsm.State _to, fsm.Event _event ) {
-        Reset();
-        stateMachine.Send( (int) EventType.Restart );
-    }
-
-    // ------------------------------------------------------------------ 
-    // Desc: 
-    // ------------------------------------------------------------------ 
-
-    protected void ExitRestartState ( fsm.State _from, fsm.State _to, fsm.Event _event ) {
-        gamePanel.HideGameOver();
-    }
-
-
-    ///////////////////////////////////////////////////////////////////////////////
-    //
-    ///////////////////////////////////////////////////////////////////////////////
-
-    // ------------------------------------------------------------------ 
-    // Desc: 
-    // ------------------------------------------------------------------ 
-
-    public void AcceptInput ( bool _accept ) {
-        exUIPanel panelSelf = gamePanel.GetComponent<exUIPanel>();
-        gamePanel.enabled = _accept;
-        panelSelf.enabled = _accept;
-        player.AcceptInput(_accept);
-    }
-
-    // ------------------------------------------------------------------ 
-    // Desc: 
-    // ------------------------------------------------------------------ 
-
-    public void Scratch() {
-        // Debug.Log("Scratch!");
-        power += 1.0f;
-        gamePanel.OnScratchUpdate();
-        // if (Time.frameCount%2 == 1) {
-        StartSlowMo();
-        // }
-    }
-
-    // ------------------------------------------------------------------ 
-    // Desc: 
-    // ------------------------------------------------------------------ 
-
-    void StartSlowMo() {
-        Time.timeScale = 0.5f;
-        Invoke("StopSlowMo", 0.5f);
-        // isSlowMo = true;
-    }
-
-    // ------------------------------------------------------------------ 
-    // Desc: 
-    // ------------------------------------------------------------------ 
-
-    void StopSlowMo() {
-        Time.timeScale = 1.0f;
-        // isSlowMo = false;
+    void ExitStageState ( fsm.State _from, fsm.State _to, fsm.Event _event ) {
     }
 }
-
-
 
 

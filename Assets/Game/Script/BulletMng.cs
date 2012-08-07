@@ -70,7 +70,7 @@ public class BulletMng: MonoBehaviour {
     // ------------------------------------------------------------------ 
 
     public void UpdateSpeed() {
-        speedLvl = Mathf.FloorToInt(Game.instance.timer/20.0f);
+        speedLvl = Mathf.FloorToInt(Stage.instance.timer/20.0f);
         maxSpeed = initMaxSpeed + speedLvl * 30.0f;
         maxNormalBullet = initMaxNormalBullet + speedLvl * 15;
     }
@@ -84,17 +84,17 @@ public class BulletMng: MonoBehaviour {
         float posY = 0.0f;
         int borderPicker = Random.Range(0, 4);
         if (borderPicker == 0) { //spawn from top
-            posX = Random.Range(Game.instance.boundingLeft - spawnAreaMargin/2, Game.instance.boundingRight + spawnAreaMargin/2);
-            posY = Game.instance.boundingTop + spawnAreaMargin/2;
+            posX = Random.Range(Stage.instance.boundingLeft - spawnAreaMargin/2, Stage.instance.boundingRight + spawnAreaMargin/2);
+            posY = Stage.instance.boundingTop + spawnAreaMargin/2;
         } else if (borderPicker == 1) { //spawn from right
-            posX = Game.instance.boundingRight + spawnAreaMargin/2;
-            posY = Random.Range(Game.instance.boundingTop - spawnAreaMargin/2, Game.instance.boundingBot + spawnAreaMargin/2);
+            posX = Stage.instance.boundingRight + spawnAreaMargin/2;
+            posY = Random.Range(Stage.instance.boundingTop - spawnAreaMargin/2, Stage.instance.boundingBot + spawnAreaMargin/2);
         } else if (borderPicker == 2) { //spawn from bot
-            posX = Random.Range(Game.instance.boundingLeft - spawnAreaMargin/2, Game.instance.boundingRight + spawnAreaMargin/2);
-            posY = Game.instance.boundingBot - spawnAreaMargin/2;
+            posX = Random.Range(Stage.instance.boundingLeft - spawnAreaMargin/2, Stage.instance.boundingRight + spawnAreaMargin/2);
+            posY = Stage.instance.boundingBot - spawnAreaMargin/2;
         } else if (borderPicker == 3) { //spawn from left
-            posX = Game.instance.boundingLeft - spawnAreaMargin/2;
-            posY = Random.Range(Game.instance.boundingTop - spawnAreaMargin/2, Game.instance.boundingBot + spawnAreaMargin/2);
+            posX = Stage.instance.boundingLeft - spawnAreaMargin/2;
+            posY = Random.Range(Stage.instance.boundingTop - spawnAreaMargin/2, Stage.instance.boundingBot + spawnAreaMargin/2);
         }
  
         // if (posX > -Camera.main.pixelWidth/2 - 20.0f && posX < Camera.main.pixelWidth/2 + 20.0f) { 
@@ -116,7 +116,7 @@ public class BulletMng: MonoBehaviour {
 
     void SpawnANormalBullet() {
         if (normalBulletCount <= maxNormalBullet) {
-            NormalBullet bullet = Game.instance.spawner.SpawnNormalBullet(GetSpawnPoint());
+            NormalBullet bullet = Stage.instance.spawner.SpawnNormalBullet(GetSpawnPoint());
             bullet.Active();
             bullet.StartMoving();
             normalBulletCount++;
@@ -131,19 +131,19 @@ public class BulletMng: MonoBehaviour {
     void SpawnShield() {
         float posX = 0.0f;
         float posY = 0.0f;
-        if (Game.instance.player.transform.position.x > 0) {
+        if (Stage.instance.player.transform.position.x > 0) {
             posX = Random.Range(-300.0f, -250.0f);
         } else {
             posX = Random.Range(250.0f, 300.0f);
         }
 
-        if (Game.instance.player.transform.position.y > 0) {
-            posY = Game.rightBoundary;
+        if (Stage.instance.player.transform.position.y > 0) {
+            posY = Stage.rightBoundary;
         } else {
             posY = Screen.height/2;
         }
 
-        PUShield shield = Game.instance.spawner.SpawnPowerUp(new Vector2(posX, posY)) as PUShield;
+        PUShield shield = Stage.instance.spawner.SpawnPowerUp(new Vector2(posX, posY)) as PUShield;
         shield.Active();
         shield.EnterField();
 
