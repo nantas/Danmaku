@@ -389,10 +389,12 @@ public class Stage : FSMBase {
 
     public void Scratch() {
         // Debug.Log("Scratch!");
-        power += 5.0f;
+        power += 1.0f;
         gamePanel.OnScratchUpdate();
-        // if (Time.frameCount%2 == 1) {
-        StartSlowMo();
+        player.Scratch();
+        if (Time.frameCount%10 == 1) {
+            StartSlowMo();
+        }
         if (power >= player.maxPower) {
             power = player.maxPower;
             PowerMaxed();
@@ -426,6 +428,20 @@ public class Stage : FSMBase {
     void PowerMaxed() {
         gamePanel.PowerMaxed();
     }
+
+    
+    // ------------------------------------------------------------------ 
+    // Desc: 
+    // ------------------------------------------------------------------ 
+    
+    public void PowerReleased() {
+        power = 0.0f;
+        player.StartShield(3.0f);
+    }
+
+
+
+
 
 }
 

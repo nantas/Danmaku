@@ -20,6 +20,7 @@ public class Bullet: MonoBehaviour {
 
 
     public float aimingRange = 0.0f;
+    public float bulletSpeed = 0.0f;
 
     protected Vector2 velocity = Vector2.zero;
     protected BulletMng bulletMng = null;
@@ -62,7 +63,7 @@ public class Bullet: MonoBehaviour {
         if (_other.gameObject.tag == "Player") {
             _other.GetComponent<Player>().Destroy();
         } else if (_other.gameObject.tag == "PlayerSkirt" && Stage.instance.player.isShielded) {
-            Stage.instance.spawner.DestroyBullet(this);
+            Destroy();
         }
 
     }
@@ -76,6 +77,15 @@ public class Bullet: MonoBehaviour {
             Stage.instance.Scratch();
         }
     }
+
+
+    // ------------------------------------------------------------------ 
+    // Desc: 
+    // ------------------------------------------------------------------ 
+
+    protected virtual void Destroy() {
+    }
+
 }
 
 

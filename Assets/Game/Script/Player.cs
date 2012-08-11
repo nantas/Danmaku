@@ -31,6 +31,7 @@ public class Player : MonoBehaviour {
     // protected Vector2 speed = Vector2.zero;
     // protected Vector2 accelVector = Vector2.zero;
     protected Vector3 initPlayerPos = Vector3.zero;
+    protected bool isShieldBlink;
 
     // ------------------------------------------------------------------ 
     // Desc: 
@@ -60,6 +61,7 @@ public class Player : MonoBehaviour {
         spShip.enabled = true;
         spFX.enabled = false;
         isShielded = false;
+        isShieldBlink = false;
         transform.position = new Vector3(Stage.instance.transform.position.x,
                                          Stage.instance.transform.position.y,
                                          transform.position.z);
@@ -116,7 +118,7 @@ public class Player : MonoBehaviour {
     // ------------------------------------------------------------------ 
 
 	// Update is called once per frame
-	void Update () {
+    // void Update () {
         // direction = Vector2.zero;
 
         // // get input direction
@@ -162,7 +164,35 @@ public class Player : MonoBehaviour {
         // transform.Translate( speed.x, speed.y, 0.0f );
 
 
-	}
+    // }
+
+    // ------------------------------------------------------------------ 
+    // Desc: 
+    // ------------------------------------------------------------------ 
+
+    void LateUpdate() {
+        if (isShieldBlink) {
+            if (Time.frameCount%20 == 1) {
+                spFX.enabled = false;
+            } else if (Time.frameCount%20 == 11) {
+                spFX.enabled = true;
+            }
+        }
+    }
+
+
+    ///////////////////////////////////////////////////////////////////////////////
+    //
+    ///////////////////////////////////////////////////////////////////////////////
+
+    // ------------------------------------------------------------------ 
+    // Desc: 
+    // ------------------------------------------------------------------ 
+
+    public void Scratch() {
+        spFX.enabled = true;
+        spFX.spanim.Play("scratch");
+    }
 
     // ------------------------------------------------------------------ 
     // Desc: 
@@ -170,10 +200,21 @@ public class Player : MonoBehaviour {
 
     public void StartShield(float _duration) {
         isShielded = true;
+        isShieldBlink = false;
         spFX.enabled = true;
+        spFX.spanim.Play("shield");
         GetComponent<SphereCollider>().enabled = false;
         spShip.GetComponent<SphereCollider>().enabled = true;
-        Invoke("StopShield", _duration);
+        Invoke("WarningShield", _duration);
+    }
+
+    // ------------------------------------------------------------------ 
+    // Desc: 
+    // ------------------------------------------------------------------ 
+
+    public void WarningShield() {
+        isShieldBlink = true;
+        Invoke("StopShield", 1.5f);
     }
 
     // ------------------------------------------------------------------ 
@@ -182,6 +223,7 @@ public class Player : MonoBehaviour {
 
     public void StopShield() {
         isShielded = false;
+        isShieldBlink = false;
         spFX.enabled = false;
         GetComponent<SphereCollider>().enabled = true;
         spShip.GetComponent<SphereCollider>().enabled = false;

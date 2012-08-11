@@ -1,7 +1,7 @@
 // ======================================================================================
-// File         : NormalBullet.cs
+// File         : FastBullet.cs
 // Author       : nantas 
-// Last Change  : 06/02/2012 | 16:28:16 PM | Saturday,June
+// Last Change  : 08/11/2012 | 16:13:00 PM | Saturday,August
 // Description  : 
 // ======================================================================================
 
@@ -16,18 +16,15 @@ using System.Collections;
 // 
 ///////////////////////////////////////////////////////////////////////////////
 
-public class NormalBullet: Bullet {
+public class FastBullet: Bullet {
 
 
     // ------------------------------------------------------------------ 
-    // Desc: 
+    // Desc:  
     // ------------------------------------------------------------------ 
 
-    public void StartMoving() {
-        Vector2 playerPos = Stage.instance.player.transform.position;
-        Vector2 target = Random.insideUnitCircle * aimingRange + playerPos; 
-        Vector2 direction = target - new Vector2(transform.position.x, transform.position.y);
-        velocity = direction.normalized * Random.Range(bulletMng.minSpeed, bulletMng.maxSpeed);
+    public void MoveWithDirection(Vector2 _direction) { 
+        velocity = _direction.normalized * bulletSpeed;
     }
 
     // ------------------------------------------------------------------ 
@@ -44,12 +41,17 @@ public class NormalBullet: Bullet {
             transform.position.x < Stage.instance.boundingLeft - bulletMng.spawnAreaMargin ||
             transform.position.y > Stage.instance.boundingTop + bulletMng.spawnAreaMargin ||
             transform.position.y < Stage.instance.boundingBot - bulletMng.spawnAreaMargin) {
-            Stage.instance.spawner.DestroyBullet(this);
-            bulletMng.normalBulletCount -= 1;
+            Stage.instance.spawner.DestroyFastBullet(this);
         }
 
     }
 
+    // ------------------------------------------------------------------ 
+    // Desc: 
+    // ------------------------------------------------------------------ 
 
+    protected override void Destroy() {
+        Stage.instance.spawner.DestroyFastBullet(this);
+    }
 
 }

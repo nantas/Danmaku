@@ -31,6 +31,7 @@ public class GamePanel: MonoBehaviour {
     protected Vector3 lastScreenMousePos = Vector3.zero;
 
     protected bool startDragging = false;
+    protected bool isPowerReady = false;
 
     // ------------------------------------------------------------------ 
     // Desc: 
@@ -55,6 +56,8 @@ public class GamePanel: MonoBehaviour {
         txtStart.enabled = false;
         txtStart.text = "Get Ready";
         powerBar.ratio = 0;
+        isPowerReady = false;
+        btnPower.Deactive();
         // initPlayerPos = Vector3.zero;
     }
 
@@ -105,6 +108,7 @@ public class GamePanel: MonoBehaviour {
 
     public void PowerMaxed() {
         btnPower.Active();
+        isPowerReady = true;
     }
 
     // ------------------------------------------------------------------ 
@@ -113,8 +117,9 @@ public class GamePanel: MonoBehaviour {
 
     public void PowerRelease() {
         btnPower.Deactive();
-        Stage.instance.power = 0.0f;
+        Stage.instance.PowerReleased();
         OnScratchUpdate();
+        isPowerReady = false;
     }
 
 
@@ -123,6 +128,13 @@ public class GamePanel: MonoBehaviour {
     // ------------------------------------------------------------------ 
 
     void HandleInput () {
+
+        //keyboard
+
+        if (isPowerReady && Input.GetKeyDown("space")) {
+            PowerRelease();
+        }
+
         // Debug.Log("mouse input!");
         Vector3 mappedPos = Vector3.zero;
 

@@ -26,6 +26,16 @@ public class BulletMng: MonoBehaviour {
     public float initMaxSpeed = 0.0f;
     public float spawnAreaMargin = 0.0f;
 
+
+    ///////////////////////////////////////////////////////////////////////////////
+    // trident bullet
+    ///////////////////////////////////////////////////////////////////////////////
+
+    public int repeatTimes = 0;
+    protected int currentCount = 0;
+    
+
+
     [System.NonSerialized] public int normalBulletCount = 0;
     // protected Vector2 spawnPoint = Vector2.zero;
     [System.NonSerialized] public float minSpeed = 0.0f;
@@ -40,7 +50,9 @@ public class BulletMng: MonoBehaviour {
 
     public void Reset() {
         speedLvl = 0;
+        currentCount = 0;
         CancelInvoke();
+        StopAllCoroutines();
     }
 
     // ------------------------------------------------------------------ 
@@ -54,6 +66,7 @@ public class BulletMng: MonoBehaviour {
         maxSpeed = initMaxSpeed;
         normalBulletCount = 0;
         Invoke("SpawnANormalBullet", interval);
+        Invoke("SpawnTridentPattern_CO", 10.0f);
         // Invoke("SpawnShield", 15.0f);
     }
 
@@ -148,6 +161,63 @@ public class BulletMng: MonoBehaviour {
         shield.EnterField();
 
         // Invoke("SpawnShield", 15.0f);
+    }
+
+
+    ///////////////////////////////////////////////////////////////////////////////
+    //
+    ///////////////////////////////////////////////////////////////////////////////
+
+    // ------------------------------------------------------------------ 
+    // Desc: 
+    // ------------------------------------------------------------------ 
+
+    public void SpawnTridentPattern_CO() {
+        StartCoroutine("SpawnTridentPattern");
+    }
+
+    // ------------------------------------------------------------------ 
+    // Desc: 
+    // ------------------------------------------------------------------ 
+
+    public IEnumerator SpawnTridentPattern() {
+        Vector2 startPos = new Vector2( Stage.instance.transform.position.x - 200.0f, Stage.instance.transform.position.y + 300.0f );
+        currentCount = 0;
+        while (currentCount < repeatTimes) {
+            yield return new WaitForSeconds(0.2f);
+            SpawnATridentBulletAt(startPos);
+            currentCount++;
+        }
+        yield return new WaitForSeconds(0.5f);
+        startPos = new Vector2( Stage.instance.transform.position.x, Stage.instance.transform.position.y + 300.0f );
+        currentCount = 0;
+        while (currentCount < repeatTimes) {
+            yield return new WaitForSeconds(0.2f);
+            SpawnATridentBulletAt(startPos);
+            currentCount++;
+        }
+        yield return new WaitForSeconds(0.5f);
+        startPos = new Vector2( Stage.instance.transform.position.x + 200.0f, Stage.instance.transform.position.y + 300.0f );
+        currentCount = 0;
+        while (currentCount < repeatTimes) {
+            yield return new WaitForSeconds(0.2f);
+            SpawnATridentBulletAt(startPos);
+            currentCount++;
+        }        
+        Invoke("SpawnTridentPattern_CO", 20.0f);
+    }
+
+    // ------------------------------------------------------------------ 
+    // Desc: 
+    // ------------------------------------------------------------------ 
+
+    void SpawnATridentBulletAt(Vector2 _startPos) {
+        for (int i = 0; i < 3; ++i) {
+            FastBullet bullet = Stage.instance.spawner.SpawnFastBullet(_startPos);
+            bullet.Active();
+            bullet.MoveWithDirection( new Vector2( i-1, -1) );
+        }
+        Invoke("SpawnATridentBullet", 0.2f);
     }
 
 }
