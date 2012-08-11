@@ -46,5 +46,14 @@ public class MainMenu: MonoBehaviour {
         Application.LoadLevel("scene02");
     }
 
+    // ------------------------------------------------------------------ 
+    // Desc: 
+    // ------------------------------------------------------------------ 
+
+    void Update() {
+        if (Input.GetKeyDown(KeyCode.Space)) {
+            Application.LoadLevel("scene02");
+        }
+    }
 }
 

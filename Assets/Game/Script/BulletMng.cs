@@ -74,8 +74,9 @@ public class BulletMng: MonoBehaviour {
     // Desc: 
     // ------------------------------------------------------------------ 
 
-    public void StopNormalBullet() {
-        CancelInvoke("SpawnANormalBullet");
+    public void StopBullets() {
+        CancelInvoke();
+        StopAllCoroutines();
     }
 
     // ------------------------------------------------------------------ 
@@ -217,7 +218,6 @@ public class BulletMng: MonoBehaviour {
             bullet.Active();
             bullet.MoveWithDirection( new Vector2( i-1, -1) );
         }
-        Invoke("SpawnATridentBullet", 0.2f);
     }
 
 }

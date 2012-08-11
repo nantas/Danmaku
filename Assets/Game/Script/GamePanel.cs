@@ -23,6 +23,7 @@ public class GamePanel: MonoBehaviour {
     public exSpriteFont txtTime;
     // public exSpriteFont txtScratch;
     public exSpriteFont txtStart;
+    public exSpriteFont txtHint;
     public exSpriteFont txtToken;
     public ProgressBar powerBar;
 
@@ -42,6 +43,7 @@ public class GamePanel: MonoBehaviour {
         // txtScratch.text = "0";
         txtToken.text = "0";
         txtStart.enabled = false;
+        txtHint.enabled = false;
         btnPower.Deactive();
     }
 
@@ -55,6 +57,7 @@ public class GamePanel: MonoBehaviour {
         // txtScratch.text = "0";
         txtStart.enabled = false;
         txtStart.text = "Get Ready";
+        txtHint.enabled = false;
         powerBar.ratio = 0;
         isPowerReady = false;
         btnPower.Deactive();
@@ -76,6 +79,14 @@ public class GamePanel: MonoBehaviour {
     void LateUpdate() {
         if (Time.frameCount % 6 == 1) {
             txtTime.text = Stage.instance.timer.ToString("0.0");
+        }
+
+        if (isPowerReady) {
+            if (Time.frameCount % 60 == 1) {
+                txtHint.enabled = true;
+            } else if (Time.frameCount % 60 == 45) {
+                txtHint.enabled = false;
+            }
         }
     }
 
@@ -120,6 +131,7 @@ public class GamePanel: MonoBehaviour {
         Stage.instance.PowerReleased();
         OnScratchUpdate();
         isPowerReady = false;
+        txtHint.enabled = false;
     }
 
 
@@ -131,7 +143,7 @@ public class GamePanel: MonoBehaviour {
 
         //keyboard
 
-        if (isPowerReady && Input.GetKeyDown("space")) {
+        if (isPowerReady && Input.GetKeyDown(KeyCode.Space)) {
             PowerRelease();
         }
 
@@ -218,6 +230,7 @@ public class GamePanel: MonoBehaviour {
     // ------------------------------------------------------------------ 
 
     public void ShowGameOver() {
+        txtHint.enabled = false;
         panelGameOver.transform.position = Vector3.zero;
         panelGameOver.btnRetry.transform.position = new Vector3 ( Stage.instance.transform.position.x,
                                                                   Stage.instance.transform.position.y - 250,

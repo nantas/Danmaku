@@ -20,6 +20,7 @@ public class PanelGameOver : MonoBehaviour {
 
     public exUIButton btnRetry;
     public exSpriteFont txtScores;
+    public exSpriteFont txtCredit;
     //
     private bool showName = false;
 
@@ -36,11 +37,17 @@ public class PanelGameOver : MonoBehaviour {
     // Desc: 
     // ------------------------------------------------------------------ 
 
-    public void SubmitAndShowScore(string _name) {
-        bool result = GlobalSettings.instance.hsController.PostScores (_name + " ", Mathf.FloorToInt(Stage.instance.timer));
-        if (result) {
-            StartCoroutine(GlobalSettings.instance.hsController.GetScoresTo(txtScores));
-        }
+    public IEnumerator SubmitAndShowScore(string _name) {
+        // bool result = GlobalSettings.instance.hsController.PostScores (_name + " ", Mathf.FloorToInt(Stage.instance.timer));
+        StartCoroutine(GlobalSettings.instance.hsController.PostScores (_name + " ", Mathf.FloorToInt(Stage.instance.timer)));
+
+        yield return new WaitForSeconds(1.0f);
+
+        StartCoroutine(GlobalSettings.instance.hsController.GetScoresTo(txtScores));
+
+        // if (result) {
+        //     StartCoroutine(GlobalSettings.instance.hsController.GetScoresTo(txtScores));
+        // }
     }
     // ------------------------------------------------------------------ 
     // Desc: 
@@ -48,6 +55,7 @@ public class PanelGameOver : MonoBehaviour {
 
     public void ShowNamePrompt(bool _show) {
         showName = _show;
+        txtCredit.enabled = _show;
     }
 
     // ------------------------------------------------------------------ 
@@ -75,7 +83,7 @@ public class PanelGameOver : MonoBehaviour {
             if (GUI.Button (new Rect (330,160,100,20), "Submit Score")) {
                 // if (m_player_name != GlobalSettings.instance.playerProfile.playerName) {
                     GlobalSettings.instance.playerProfile.playerName = m_player_name;
-                    SubmitAndShowScore(m_player_name);
+                    StartCoroutine(SubmitAndShowScore(m_player_name));
                     GlobalSettings.instance.gameProgress.SavePlayerProfile();
                     ShowNamePrompt(false);
                 // }

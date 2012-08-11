@@ -32,6 +32,7 @@ public class Player : MonoBehaviour {
     // protected Vector2 accelVector = Vector2.zero;
     protected Vector3 initPlayerPos = Vector3.zero;
     protected bool isShieldBlink;
+    protected float initMapScale = 0.0f;
 
     // ------------------------------------------------------------------ 
     // Desc: 
@@ -39,6 +40,7 @@ public class Player : MonoBehaviour {
 
     void Awake() {
         spFX.enabled = false;
+        initMapScale = mapScale;
     }
 
     // ------------------------------------------------------------------ 
@@ -57,7 +59,8 @@ public class Player : MonoBehaviour {
     public void Reset() {
         // accelVector = Vector2.zero;
         // speed = Vector2.zero;
-        spShip.spanim.Play("idle");
+        // spShip.spanim.Play("idle");
+        spShip.spanim.Play("move");
         spShip.enabled = true;
         spFX.enabled = false;
         isShielded = false;
@@ -236,6 +239,7 @@ public class Player : MonoBehaviour {
     public void Destroy() {
         spShip.spanim.Play("destroy");
         AcceptInput(false);
+        Stage.instance.sfxPlayer.PlayOneShot(Stage.instance.sfx_explode);
         Stage.instance.GameOver();
     }
 

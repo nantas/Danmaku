@@ -46,6 +46,10 @@ public class Stage : FSMBase {
     public float boundingTop;
     public float boundingBot;
 
+    public AudioClip sfx_explode;
+    public AudioClip sfx_scratch;
+    public AudioSource sfxPlayer;
+
     // public HighScoreBoard hsBoard;
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -335,7 +339,7 @@ public class Stage : FSMBase {
     protected void EnterGameOverState ( fsm.State _from, fsm.State _to, fsm.Event _event ) {
         AcceptInput(false);
         gamePanel.ShowGameOver(); 
-        bulletMng.StopNormalBullet();
+        bulletMng.StopBullets();
         gamePanel.panelGameOver.ShowNamePrompt(true);
     }
 
@@ -389,16 +393,17 @@ public class Stage : FSMBase {
 
     public void Scratch() {
         // Debug.Log("Scratch!");
-        power += 1.0f;
+        power += 1.5f;
         gamePanel.OnScratchUpdate();
         player.Scratch();
-        if (Time.frameCount%10 == 1) {
+        if (Time.frameCount%4 == 1) {
             StartSlowMo();
         }
         if (power >= player.maxPower) {
             power = player.maxPower;
             PowerMaxed();
         }
+        sfxPlayer.PlayOneShot(sfx_scratch);
         // }
     }
 
@@ -436,7 +441,7 @@ public class Stage : FSMBase {
     
     public void PowerReleased() {
         power = 0.0f;
-        player.StartShield(3.0f);
+        player.StartShield(4.0f);
     }
 
 

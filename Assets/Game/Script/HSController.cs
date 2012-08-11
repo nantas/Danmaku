@@ -27,35 +27,35 @@ public class HSController : MonoBehaviour
     // Desc: 
     // ------------------------------------------------------------------ 
 
-    public bool TestConnection() {
-        float timeTaken = 0.0F;
-        float maxTime = 2.0F;
-        bool thereIsConnection = false;
+    // public bool TestConnection() {
+    //     float timeTaken = 0.0F;
+    //     float maxTime = 2.0F;
+    //     bool thereIsConnection = false;
  
-        Ping testPing = new Ping( "31.170.163.90" );//ip of 000webhost
+    //     Ping testPing = new Ping( "31.170.163.90" );//ip of 000webhost
 
-        timeTaken = 0.0F;
-        while ( !testPing.isDone )
-        {
-            timeTaken += Time.deltaTime;
-            if ( timeTaken > maxTime )
-            {
-                // if time has exceeded the max
-                // time, break out and return false
-                thereIsConnection = false;
-                break;
-            }
-        }
-        if ( timeTaken <= maxTime ) thereIsConnection = true;
-        return thereIsConnection;
-    }
+    //     timeTaken = 0.0F;
+    //     while ( !testPing.isDone )
+    //     {
+    //         timeTaken += Time.deltaTime;
+    //         if ( timeTaken > maxTime )
+    //         {
+    //             // if time has exceeded the max
+    //             // time, break out and return false
+    //             thereIsConnection = false;
+    //             break;
+    //         }
+    //     }
+    //     if ( timeTaken <= maxTime ) thereIsConnection = true;
+    //     return thereIsConnection;
+    // }
 
     // ------------------------------------------------------------------ 
     // Desc: 
     // ------------------------------------------------------------------ 
 
     // remember to use StartCoroutine when calling this function!
-    public bool PostScores(string name, int score) //return true for submisstion successful.
+    public IEnumerator PostScores(string name, int score) //return true for submisstion successful.
     {
         if (name == " ") {
             name = "Molika ";
@@ -68,25 +68,25 @@ public class HSController : MonoBehaviour
 
         // Post the URL to the site and create a download object to get the result.
         WWW hs_post = new WWW(post_url);
-        //yield return hs_post; // Wait until the download is done
-        // int tryTimes = 300;
-        while (!hs_post.isDone) {
-            // if (tryTimes <= 0) {
-            //     Debug.Log("connection over time, no score submitted.");
-            //     return false;
-            // } else {
-            //     tryTimes -= 1;
-            // }
-        }
+        yield return hs_post; // Wait until the download is done
+
+        // int tryTimes = 1000;
+        // while (!hs_post.isDone) {
+        //     if (tryTimes <= 0) {
+        //         Debug.Log("connection over time, no score submitted.");
+        //         return false;
+        //     } else {
+        //         tryTimes -= 1;
+        //     }
+        // }
 
         if (hs_post.error != null)
         {
             Debug.Log("There was an error posting the high score: " + hs_post.error);
-            return false;
-        } else {
-            return true;
         }
+
     }
+
 
     // ------------------------------------------------------------------ 
     // Desc: 
