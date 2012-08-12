@@ -96,6 +96,7 @@ public class HSController : MonoBehaviour
     // remember to use StartCoroutine when calling this function!
     public IEnumerator GetScoresTo(exSpriteFont _targetText)
     {
+        _targetText.enabled = true;
         _targetText.text = "loading scores...";
         //Debug.Log(_targetText.text);
         WWW hs_get = new WWW(highscoreURL);

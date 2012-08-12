@@ -195,6 +195,8 @@ public class Player : MonoBehaviour {
     public void Scratch() {
         spFX.enabled = true;
         spFX.spanim.Play("scratch");
+        if (isShielded)
+            spFX.spanim.Play("shield");
     }
 
     // ------------------------------------------------------------------ 
@@ -206,8 +208,9 @@ public class Player : MonoBehaviour {
         isShieldBlink = false;
         spFX.enabled = true;
         spFX.spanim.Play("shield");
+        Stage.instance.sfxPlayer.PlayOneShot(Stage.instance.sfx_powerup);
         GetComponent<SphereCollider>().enabled = false;
-        spShip.GetComponent<SphereCollider>().enabled = true;
+        // spShip.GetComponent<SphereCollider>().enabled = true;
         Invoke("WarningShield", _duration);
     }
 
@@ -229,7 +232,7 @@ public class Player : MonoBehaviour {
         isShieldBlink = false;
         spFX.enabled = false;
         GetComponent<SphereCollider>().enabled = true;
-        spShip.GetComponent<SphereCollider>().enabled = false;
+        // spShip.GetComponent<SphereCollider>().enabled = false;
     }
 
     // ------------------------------------------------------------------ 

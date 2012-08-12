@@ -31,6 +31,7 @@ public class PanelGameOver : MonoBehaviour {
     public void OnRetry() {
         ShowNamePrompt(false);
         Stage.instance.Restart();
+        txtScores.enabled = false;
     }
 
     // ------------------------------------------------------------------ 

@@ -48,6 +48,7 @@ public class Stage : FSMBase {
 
     public AudioClip sfx_explode;
     public AudioClip sfx_scratch;
+    public AudioClip sfx_powerup;
     public AudioSource sfxPlayer;
 
     // public HighScoreBoard hsBoard;
@@ -393,7 +394,7 @@ public class Stage : FSMBase {
 
     public void Scratch() {
         // Debug.Log("Scratch!");
-        power += 1.5f;
+        power += 2.0f;
         gamePanel.OnScratchUpdate();
         player.Scratch();
         if (Time.frameCount%4 == 1) {
