@@ -23,6 +23,7 @@ public class Bullet: MonoBehaviour {
     public float bulletSpeed = 0.0f;
 
     protected Vector2 velocity = Vector2.zero;
+    protected ChallengeMng challengeMng = null;
     protected BulletMng bulletMng = null;
     protected exSprite spBullet;
 
@@ -31,7 +32,7 @@ public class Bullet: MonoBehaviour {
     // ------------------------------------------------------------------ 
 
     void Awake() {
-        bulletMng = Stage.instance.bulletMng;
+        challengeMng = Stage.instance.challengeMng;
         spBullet = GetComponent<exSprite>();
     }
 
@@ -53,6 +54,14 @@ public class Bullet: MonoBehaviour {
         spBullet.enabled = true;
         collider.enabled = true;
         enabled = true;
+    }
+
+    // ------------------------------------------------------------------ 
+    // Desc: 
+    // ------------------------------------------------------------------ 
+
+    public virtual void Init(BulletMng _mng) {
+        bulletMng = _mng;
     }
 
     // ------------------------------------------------------------------ 

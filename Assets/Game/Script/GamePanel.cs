@@ -142,10 +142,27 @@ public class GamePanel: MonoBehaviour {
     void HandleInput () {
 
         //keyboard
+        if (Input.GetKeyDown(KeyCode.M)) {
+            Stage.instance.ToggleMusic();
+        }
 
         if (isPowerReady && Input.GetKeyDown(KeyCode.Space)) {
             PowerRelease();
         }
+
+        // // backup keyboard control
+        // if (Input.GetKey(KeyCode.UpArrow)) {
+        //     Stage.instance.player.GetUp();
+        // }
+        // if (Input.GetKey(KeyCode.DownArrow)) {
+        //     Stage.instance.player.GetDown();
+        // }
+        // if (Input.GetKey(KeyCode.LeftArrow)) {
+        //     Stage.instance.player.GetLeft();
+        // }
+        // if (Input.GetKey(KeyCode.RightArrow)) {
+        //     Stage.instance.player.GetRight();
+        // }
 
         // Debug.Log("mouse input!");
         Vector3 mappedPos = Vector3.zero;

@@ -1,5 +1,5 @@
 // ======================================================================================
-// File         : PatternInfo.cs
+// File         : BulletInfo.cs
 // Author       : Wang Nan 
 // Last Change  : 07/03/2012 | 23:06:32 PM | Tuesday,July
 // Description  : 
@@ -17,7 +17,7 @@ using System.Collections.Generic;
 //
 ///////////////////////////////////////////////////////////////////////////////
 
-public class PatternInfo : ScriptableObject {
+public class BulletInfo : ScriptableObject {
 
     public Danmaku.BulletType type = Danmaku.BulletType.Unknown; // DEBUG
 

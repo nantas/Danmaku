@@ -24,7 +24,6 @@ public class NormalBulletMng: BulletMng {
     public float maxInterval = 0.0f;
     public float initMinSpeed = 0.0f;
     public float initMaxSpeed = 0.0f;
-    public float spawnAreaMargin = 0.0f;
 
     [System.NonSerialized] public int normalBulletCount = 0;
     [System.NonSerialized] public float minSpeed = 0.0f;
@@ -36,7 +35,8 @@ public class NormalBulletMng: BulletMng {
     // Desc: 
     // ------------------------------------------------------------------ 
 
-    public void Reset() {
+    public override void Reset() {
+        base.Reset();
         speedLvl = 0;
         CancelInvoke();
         StopAllCoroutines();
@@ -46,21 +46,23 @@ public class NormalBulletMng: BulletMng {
     // Desc: 
     // ------------------------------------------------------------------ 
 
-    public void StartPattern() {
-        float interval = Random.Range(minInterval, maxInterval);
+    public override void StartBullets() {
+        // interval = Random.Range(minInterval, maxInterval);
         maxNormalBullet = initMaxNormalBullet;
         minSpeed = initMinSpeed;
         maxSpeed = initMaxSpeed;
         normalBulletCount = 0;
-        Invoke("SpawnANormalBullet", interval);
+        // Invoke("SpawnANormalBullet", interval);
         // Invoke("SpawnShield", 15.0f);
+        base.StartBullets();
     }
 
     // ------------------------------------------------------------------ 
     // Desc: 
     // ------------------------------------------------------------------ 
 
-    public void StopBullets() {
+    public override void StopBullets() {
+        base.StopBullets();
         CancelInvoke();
         StopAllCoroutines();
     }
@@ -69,7 +71,8 @@ public class NormalBulletMng: BulletMng {
     // Desc: 
     // ------------------------------------------------------------------ 
 
-    public void UpdateSpeed() {
+    public override void UpdateSpeed() {
+        base.UpdateSpeed();
         speedLvl = Mathf.FloorToInt(Stage.instance.timer/20.0f);
         maxSpeed = initMaxSpeed + speedLvl * 30.0f;
         maxNormalBullet = initMaxNormalBullet + speedLvl * 15;
@@ -107,11 +110,41 @@ public class NormalBulletMng: BulletMng {
     void SpawnANormalBullet() {
         if (normalBulletCount <= maxNormalBullet) {
             NormalBullet bullet = Stage.instance.spawner.SpawnNormalBullet(GetSpawnPoint());
+            bullet.Init(this);
             bullet.Active();
             bullet.StartMoving();
             normalBulletCount++;
         }
-        Invoke("SpawnANormalBullet", Random.Range(minInterval, maxInterval));
+        // Invoke("SpawnANormalBullet", Random.Range(minInterval, maxInterval));
+        interval = Random.Range(minInterval, maxInterval);
+        spawnTimer = 0.0f;
     }
+
+    ///////////////////////////////////////////////////////////////////////////////
+    // Main Loop State
+    ///////////////////////////////////////////////////////////////////////////////
+
+
+    // ------------------------------------------------------------------ 
+    // Desc: 
+    // ------------------------------------------------------------------ 
+
+    protected override void EnterRun ( fsm.State _from, fsm.State _to, fsm.Event _event ) {
+        base.EnterRun( _from, _to, _event );
+        interval = Random.Range(minInterval, maxInterval);
+    }
+
+    // ------------------------------------------------------------------ 
+    // Desc: 
+    // ------------------------------------------------------------------ 
+
+    protected override void UpdateRun ( fsm.State _curState ) {
+        base.UpdateRun(_curState);
+        spawnTimer += Time.deltaTime;
+        if (spawnTimer > interval) {
+            SpawnANormalBullet();
+        }
+    }
+
 
 }

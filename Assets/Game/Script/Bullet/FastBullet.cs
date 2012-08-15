@@ -18,6 +18,16 @@ using System.Collections;
 
 public class FastBullet: Bullet {
 
+    protected TridentBulletMng inheritBulletMng;
+
+    // ------------------------------------------------------------------ 
+    // Desc: 
+    // ------------------------------------------------------------------ 
+
+    public override void Init(BulletMng _mng) {
+        base.Init(_mng);
+        inheritBulletMng = _mng as TridentBulletMng;
+    }
 
     // ------------------------------------------------------------------ 
     // Desc:  
@@ -37,10 +47,10 @@ public class FastBullet: Bullet {
         //handle movement 
         transform.Translate(dist.x, dist.y, 0.0f);
 
-        if (transform.position.x > Stage.instance.boundingRight + bulletMng.spawnAreaMargin ||
-            transform.position.x < Stage.instance.boundingLeft - bulletMng.spawnAreaMargin ||
-            transform.position.y > Stage.instance.boundingTop + bulletMng.spawnAreaMargin ||
-            transform.position.y < Stage.instance.boundingBot - bulletMng.spawnAreaMargin) {
+        if (transform.position.x > Stage.instance.boundingRight + challengeMng.spawnAreaMargin ||
+            transform.position.x < Stage.instance.boundingLeft - challengeMng.spawnAreaMargin ||
+            transform.position.y > Stage.instance.boundingTop + challengeMng.spawnAreaMargin ||
+            transform.position.y < Stage.instance.boundingBot - challengeMng.spawnAreaMargin) {
             Stage.instance.spawner.DestroyFastBullet(this);
         }
 

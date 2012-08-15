@@ -8,6 +8,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -20,29 +21,84 @@ using System.Collections.Generic;
 public class ChallengeMng: MonoBehaviour {
 
 
-    public class BulletPatternInfo {
-        public BulletType type = BulletType.Unknown;
-        public int repeat = 0;
+    public BulletInfo[] bulletInfos;
+    public float spawnAreaMargin = 0.0f;
+    [System.NonSerialized] public BulletMng[] bulletMngs;
+    
+    ///////////////////////////////////////////////////////////////////////////////
+    //
+    ///////////////////////////////////////////////////////////////////////////////
+
+    // ------------------------------------------------------------------ 
+    // Desc: 
+    // ------------------------------------------------------------------ 
+
+    void Awake() {
+        // initialize bulletMngs
+        bulletMngs = new BulletMng[bulletInfos.Length];
+        for (int i = 0; i < bulletInfos.Length; ++i) {
+            string bulletName = bulletInfos[i].type.ToString().ToLower();
+            string path = "prefab/bulletmng/" + bulletName;
+            GameObject goPrefab = Resources.Load( path, typeof(GameObject) ) as GameObject;
+            GameObject go = GameObject.Instantiate( goPrefab, Vector3.zero, Quaternion.identity ) as GameObject; 
+            go.transform.parent = transform;
+            bulletMngs[i] = go.GetComponent<BulletMng>();
+        }
+        Init();
     }
 
+    // ------------------------------------------------------------------ 
+    // Desc: 
+    // ------------------------------------------------------------------ 
 
-    
+    public void Init() {
+        for (int i = 0; i < bulletMngs.Length; ++i) {
+            bulletMngs[i].Init(bulletInfos[i]);
+        }
+    }
+
     // ------------------------------------------------------------------ 
     // Desc: 
     // ------------------------------------------------------------------ 
 
     public void Reset() {
-        CancelInvoke();
-        StopAllCoroutines();
+        for (int i = 0; i < bulletMngs.Length; ++i) {
+            bulletMngs[i].Reset();
+        }
     }
 
     // ------------------------------------------------------------------ 
     // Desc: 
     // ------------------------------------------------------------------ 
 
-    public void StopAllBullets() {
+    public void StartChallenges() {
+        System.GC.Collect();
+        for (int i = 0; i < bulletMngs.Length; ++i) {
+            bulletMngs[i].StartStateMachine();
+        }
+    }
+
+
+    // ------------------------------------------------------------------ 
+    // Desc: 
+    // ------------------------------------------------------------------ 
+
+    public void StopChallenges() {
         CancelInvoke();
         StopAllCoroutines();
+        for (int i = 0; i < bulletMngs.Length; ++i) {
+            bulletMngs[i].StopBullets();
+        }
+    }
+
+    // ------------------------------------------------------------------ 
+    // Desc: 
+    // ------------------------------------------------------------------ 
+
+    public void UpdateSpeed() {
+        for (int i = 0; i < bulletMngs.Length; ++i) {
+            bulletMngs[i].UpdateSpeed();
+        }
     }
 
     // ------------------------------------------------------------------ 

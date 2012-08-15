@@ -20,16 +20,21 @@ public class Player : MonoBehaviour {
     public exSprite spShip;
     public exSprite spFX;
     public float maxPower = 10.0f;
-    // public float maxSpeed = 0.0f;
     public float mapScale = 0.0f;
-    // public float brake = 0.0f;
     public float damping = 0.0f;
+
+    // keyboard control support
+    public float acceleration = 0.0f;
+    public float brake = 0.0f;
+    public float maxSpeed = 0.0f;
 
     [System.NonSerialized] public bool isShielded = false;
 
-    // protected Vector2 direction = Vector2.zero;
-    // protected Vector2 speed = Vector2.zero;
-    // protected Vector2 accelVector = Vector2.zero;
+    // keyboard control support
+    protected Vector2 direction = Vector2.zero;
+    protected Vector2 speed = Vector2.zero;
+    protected Vector2 accelVector = Vector2.zero;
+
     protected Vector3 initPlayerPos = Vector3.zero;
     protected bool isShieldBlink;
     protected float initMapScale = 0.0f;
@@ -57,8 +62,8 @@ public class Player : MonoBehaviour {
     // ------------------------------------------------------------------ 
 
     public void Reset() {
-        // accelVector = Vector2.zero;
-        // speed = Vector2.zero;
+        accelVector = Vector2.zero;
+        speed = Vector2.zero;
         // spShip.spanim.Play("idle");
         spShip.spanim.Play("move");
         spShip.enabled = true;
@@ -120,54 +125,53 @@ public class Player : MonoBehaviour {
     // Desc: 
     // ------------------------------------------------------------------ 
 
-	// Update is called once per frame
-    // void Update () {
-        // direction = Vector2.zero;
+    void Update () {
+        direction = Vector2.zero;
 
-        // // get input direction
+        // get input direction
         // if (Application.isEditor && isAcceptInput ) {
-        //     if (Input.GetKey(KeyCode.UpArrow)) {
-        //         direction += new Vector2(0.0f, 1.0f);
-        //     }
+            if (Input.GetKey(KeyCode.UpArrow)) {
+                direction += new Vector2(0.0f, 1.0f);
+            }
 
-        //     if (Input.GetKey(KeyCode.DownArrow)) {
-        //         direction += new Vector2(0.0f, -1.0f);
-        //     }
+            if (Input.GetKey(KeyCode.DownArrow)) {
+                direction += new Vector2(0.0f, -1.0f);
+            }
 
-        //     if (Input.GetKey(KeyCode.LeftArrow)) {
-        //         direction += new Vector2(-1.0f, 0.0f);
-        //     }
+            if (Input.GetKey(KeyCode.LeftArrow)) {
+                direction += new Vector2(-1.0f, 0.0f);
+            }
 
-        //     if (Input.GetKey(KeyCode.RightArrow)) {
-        //         direction += new Vector2(1.0f, 0.0f);
-        //     }
+            if (Input.GetKey(KeyCode.RightArrow)) {
+                direction += new Vector2(1.0f, 0.0f);
+            }
         // }
 
-        // // calculate speed
-        // if (direction != Vector2.zero) {
-        //     Vector2 accel = direction * acceleration; 
-        //     speed += accel * Time.deltaTime;
-        //     if (speed.magnitude > maxSpeed) {
-        //         speed = speed.normalized * maxSpeed;
-        //     }
+        // calculate speed
+        if (direction != Vector2.zero) {
+            Vector2 accel = direction * acceleration; 
+            speed += accel * Time.deltaTime;
+            if (speed.magnitude > maxSpeed) {
+                speed = speed.normalized * maxSpeed;
+            }
         // } else if (accelVector != Vector2.zero) {
         //     speed += accelVector * acceleration * Time.deltaTime;
         //     if (speed.magnitude > maxSpeed) {
         //         speed = speed.normalized * maxSpeed;
         //     }
-        // } else {
-        //     speed -= brake * Time.deltaTime * speed.normalized;
-        //     if (speed.magnitude < 1.0f) {
-        //         speed = Vector2.zero;
-        //     }
-        // }
+        } else {
+            speed -= brake * Time.deltaTime * speed.normalized;
+            if (speed.magnitude < 1.0f) {
+                speed = Vector2.zero;
+            }
+        }
 
         // speed = accelVector * maxSpeed;
-        // // handle movement 
-        // transform.Translate( speed.x, speed.y, 0.0f );
+        // handle movement 
+        transform.Translate( speed.x, speed.y, 0.0f );
 
 
-    // }
+    }
 
     // ------------------------------------------------------------------ 
     // Desc: 

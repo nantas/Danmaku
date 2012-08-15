@@ -61,7 +61,7 @@ public class Stage : FSMBase {
     [System.NonSerialized] public Spawner spawner = null;
     [System.NonSerialized] public Player player = null; 
     [System.NonSerialized] public GamePanel gamePanel = null;
-    [System.NonSerialized] public BulletMng bulletMng = null;
+    [System.NonSerialized] public ChallengeMng challengeMng = null;
 
     public float timer {
         get { return timer_; }
@@ -109,9 +109,6 @@ public class Stage : FSMBase {
         mainLoop.onEnter += EnterMainLoopState;
         mainLoop.onAction += UpdateMainLoopState;
         mainLoop.mode = fsm.State.Mode.Parallel;
-
-            fsm.State normalBullet = new fsm.State( "normalBullet", mainLoop );
-            normalBullet.onAction += UpdateNormalBullet;
 
         fsm.State pause = new fsm.State( "pause", stateMachine );
         pause.onEnter += EnterPauseState;
@@ -169,7 +166,7 @@ public class Stage : FSMBase {
         if ( gamePanel == null ) {
             Debug.LogError ( "Can't find GamePanel in the scene" );
         }
-        bulletMng = FindObjectOfType (typeof(BulletMng)) as BulletMng;
+        challengeMng = FindObjectOfType (typeof(ChallengeMng)) as ChallengeMng;
         spawner.Init();
 
     }
@@ -192,7 +189,7 @@ public class Stage : FSMBase {
     public override void Reset() {
         spawner.Reset();
         gamePanel.Reset();
-        bulletMng.Reset();
+        challengeMng.Reset();
         player.Reset();
 
         timer = 0.0f;
@@ -286,7 +283,8 @@ public class Stage : FSMBase {
     // ------------------------------------------------------------------ 
 
     void EnterMainLoopState ( fsm.State _from, fsm.State _to, fsm.Event _event ) {
-        bulletMng.StartNormalBullet();
+        challengeMng.StartChallenges();
+        Screen.showCursor = false;
         AcceptInput(true);
     }
 
@@ -296,17 +294,10 @@ public class Stage : FSMBase {
 
     protected void UpdateMainLoopState ( fsm.State _curState ) {
         timer += Time.deltaTime;
-        if (Time.frameCount%60 == 1) {
-            bulletMng.UpdateSpeed();
+        if (Mathf.FloorToInt(timer)%10 == 1) {
+            challengeMng.UpdateSpeed();
         }
 
-    }
-
-    // ------------------------------------------------------------------ 
-    // Desc: 
-    // ------------------------------------------------------------------ 
-
-    protected void UpdateNormalBullet ( fsm.State _curState ) {
     }
 
     ///////////////////////////////////////////////////////////////////////////////
@@ -340,7 +331,7 @@ public class Stage : FSMBase {
     protected void EnterGameOverState ( fsm.State _from, fsm.State _to, fsm.Event _event ) {
         AcceptInput(false);
         gamePanel.ShowGameOver(); 
-        bulletMng.StopBullets();
+        challengeMng.StopChallenges();
         gamePanel.panelGameOver.ShowNamePrompt(true);
     }
 
@@ -446,6 +437,24 @@ public class Stage : FSMBase {
     }
 
 
+
+    ///////////////////////////////////////////////////////////////////////////////
+    //
+    ///////////////////////////////////////////////////////////////////////////////
+
+
+    // ------------------------------------------------------------------ 
+    // Desc: 
+    // ------------------------------------------------------------------ 
+
+    public void ToggleMusic() {
+        AudioSource musicPlayer = GetComponent<AudioSource>();
+        if (musicPlayer.mute) {
+            musicPlayer.mute = false;
+        } else {
+            musicPlayer.mute = true;
+        }
+    }
 
 
 
