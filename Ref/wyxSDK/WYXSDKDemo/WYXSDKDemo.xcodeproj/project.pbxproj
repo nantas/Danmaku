@@ -1,0 +1,646 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		6F2917A7149B243D003E2AD2 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F2917A6149B243D003E2AD2 /* UIKit.framework */; };
+		6F2917A9149B243D003E2AD2 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F2917A8149B243D003E2AD2 /* Foundation.framework */; };
+		6F2917AB149B243D003E2AD2 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F2917AA149B243D003E2AD2 /* CoreGraphics.framework */; };
+		6F2917B1149B243D003E2AD2 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6F2917AF149B243D003E2AD2 /* InfoPlist.strings */; };
+		6F2917B4149B243D003E2AD2 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F2917B3149B243D003E2AD2 /* main.m */; };
+		6F2917B7149B243D003E2AD2 /* WYXSDKDemoAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F2917B6149B243D003E2AD2 /* WYXSDKDemoAppDelegate.m */; };
+		6F2917BA149B243D003E2AD2 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6F2917B8149B243D003E2AD2 /* MainWindow.xib */; };
+		6F2917BD149B243D003E2AD2 /* WYXSDKDemoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F2917BC149B243D003E2AD2 /* WYXSDKDemoViewController.m */; };
+		6F2917C0149B243D003E2AD2 /* WYXSDKDemoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6F2917BE149B243D003E2AD2 /* WYXSDKDemoViewController.xib */; };
+		6F2917C7149B243D003E2AD2 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F2917A6149B243D003E2AD2 /* UIKit.framework */; };
+		6F2917C8149B243D003E2AD2 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F2917A8149B243D003E2AD2 /* Foundation.framework */; };
+		6F2917C9149B243D003E2AD2 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F2917AA149B243D003E2AD2 /* CoreGraphics.framework */; };
+		6F2917D1149B243D003E2AD2 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6F2917CF149B243D003E2AD2 /* InfoPlist.strings */; };
+		6F2917D4149B243D003E2AD2 /* WYXSDKDemoTests.h in Resources */ = {isa = PBXBuildFile; fileRef = 6F2917D3149B243D003E2AD2 /* WYXSDKDemoTests.h */; };
+		6F2917D6149B243D003E2AD2 /* WYXSDKDemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F2917D5149B243D003E2AD2 /* WYXSDKDemoTests.m */; };
+		6F29180E149B28C8003E2AD2 /* ASIAuthenticationDialog.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F2917EB149B28C8003E2AD2 /* ASIAuthenticationDialog.m */; };
+		6F29180F149B28C8003E2AD2 /* ASIDataCompressor.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F2917EE149B28C8003E2AD2 /* ASIDataCompressor.m */; };
+		6F291810149B28C8003E2AD2 /* ASIDataDecompressor.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F2917F0149B28C8003E2AD2 /* ASIDataDecompressor.m */; };
+		6F291811149B28C8003E2AD2 /* ASIDownloadCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F2917F2149B28C8003E2AD2 /* ASIDownloadCache.m */; };
+		6F291812149B28C8003E2AD2 /* ASIFormDataRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F2917F4149B28C8003E2AD2 /* ASIFormDataRequest.m */; };
+		6F291813149B28C8003E2AD2 /* ASIHTTPRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F2917F6149B28C8003E2AD2 /* ASIHTTPRequest.m */; };
+		6F291814149B28C8003E2AD2 /* ASIInputStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F2917FA149B28C8003E2AD2 /* ASIInputStream.m */; };
+		6F291815149B28C8003E2AD2 /* ASINetworkQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F2917FC149B28C8003E2AD2 /* ASINetworkQueue.m */; };
+		6F291816149B28C8003E2AD2 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F291800149B28C8003E2AD2 /* Reachability.m */; };
+		6F291817149B28C8003E2AD2 /* WBGameEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F291803149B28C8003E2AD2 /* WBGameEngine.m */; };
+		6F291818149B28C8003E2AD2 /* WBOauthView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F291806149B28C8003E2AD2 /* WBOauthView.m */; };
+		6F291819149B28C8003E2AD2 /* WBGameApiManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F291809149B28C8003E2AD2 /* WBGameApiManager.m */; };
+		6F29181A149B28C8003E2AD2 /* WBGameCenterManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F29180D149B28C8003E2AD2 /* WBGameCenterManager.m */; };
+		6F29181C149B28F0003E2AD2 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F29181B149B28F0003E2AD2 /* MessageUI.framework */; };
+		6F29181E149B28FA003E2AD2 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F29181D149B28FA003E2AD2 /* CFNetwork.framework */; };
+		6F291820149B290F003E2AD2 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F29181F149B290E003E2AD2 /* QuartzCore.framework */; };
+		6F291822149B2917003E2AD2 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F291821149B2917003E2AD2 /* SystemConfiguration.framework */; };
+		6F291824149B2920003E2AD2 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F291823149B2920003E2AD2 /* Security.framework */; };
+		6F291826149B2927003E2AD2 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F291825149B2927003E2AD2 /* MobileCoreServices.framework */; };
+		6F291828149B292F003E2AD2 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F291827149B292F003E2AD2 /* AVFoundation.framework */; };
+		6F29182A149B2939003E2AD2 /* libz.1.1.3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F291829149B2939003E2AD2 /* libz.1.1.3.dylib */; };
+		6F29182E149B2C13003E2AD2 /* bg.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 6F29182D149B2C13003E2AD2 /* bg.jpg */; };
+		6F291831149B36BA003E2AD2 /* WBPropertyList.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6F291830149B36B9003E2AD2 /* WBPropertyList.plist */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		6F2917CA149B243D003E2AD2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6F291799149B243C003E2AD2 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 6F2917A1149B243C003E2AD2;
+			remoteInfo = WYXSDKDemo;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		6F2917A2149B243D003E2AD2 /* WYXSDKDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WYXSDKDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		6F2917A6149B243D003E2AD2 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		6F2917A8149B243D003E2AD2 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		6F2917AA149B243D003E2AD2 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		6F2917AE149B243D003E2AD2 /* WYXSDKDemo-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "WYXSDKDemo-Info.plist"; sourceTree = "<group>"; };
+		6F2917B0149B243D003E2AD2 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		6F2917B2149B243D003E2AD2 /* WYXSDKDemo-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WYXSDKDemo-Prefix.pch"; sourceTree = "<group>"; };
+		6F2917B3149B243D003E2AD2 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		6F2917B5149B243D003E2AD2 /* WYXSDKDemoAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WYXSDKDemoAppDelegate.h; sourceTree = "<group>"; };
+		6F2917B6149B243D003E2AD2 /* WYXSDKDemoAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WYXSDKDemoAppDelegate.m; sourceTree = "<group>"; };
+		6F2917B9149B243D003E2AD2 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainWindow.xib; sourceTree = "<group>"; };
+		6F2917BB149B243D003E2AD2 /* WYXSDKDemoViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WYXSDKDemoViewController.h; sourceTree = "<group>"; };
+		6F2917BC149B243D003E2AD2 /* WYXSDKDemoViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WYXSDKDemoViewController.m; sourceTree = "<group>"; };
+		6F2917BF149B243D003E2AD2 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/WYXSDKDemoViewController.xib; sourceTree = "<group>"; };
+		6F2917C6149B243D003E2AD2 /* WYXSDKDemoTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WYXSDKDemoTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
+		6F2917CE149B243D003E2AD2 /* WYXSDKDemoTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "WYXSDKDemoTests-Info.plist"; sourceTree = "<group>"; };
+		6F2917D0149B243D003E2AD2 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		6F2917D2149B243D003E2AD2 /* WYXSDKDemoTests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WYXSDKDemoTests-Prefix.pch"; sourceTree = "<group>"; };
+		6F2917D3149B243D003E2AD2 /* WYXSDKDemoTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WYXSDKDemoTests.h; sourceTree = "<group>"; };
+		6F2917D5149B243D003E2AD2 /* WYXSDKDemoTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WYXSDKDemoTests.m; sourceTree = "<group>"; };
+		6F2917EA149B28C8003E2AD2 /* ASIAuthenticationDialog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASIAuthenticationDialog.h; sourceTree = "<group>"; };
+		6F2917EB149B28C8003E2AD2 /* ASIAuthenticationDialog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASIAuthenticationDialog.m; sourceTree = "<group>"; };
+		6F2917EC149B28C8003E2AD2 /* ASICacheDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASICacheDelegate.h; sourceTree = "<group>"; };
+		6F2917ED149B28C8003E2AD2 /* ASIDataCompressor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASIDataCompressor.h; sourceTree = "<group>"; };
+		6F2917EE149B28C8003E2AD2 /* ASIDataCompressor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASIDataCompressor.m; sourceTree = "<group>"; };
+		6F2917EF149B28C8003E2AD2 /* ASIDataDecompressor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASIDataDecompressor.h; sourceTree = "<group>"; };
+		6F2917F0149B28C8003E2AD2 /* ASIDataDecompressor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASIDataDecompressor.m; sourceTree = "<group>"; };
+		6F2917F1149B28C8003E2AD2 /* ASIDownloadCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASIDownloadCache.h; sourceTree = "<group>"; };
+		6F2917F2149B28C8003E2AD2 /* ASIDownloadCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASIDownloadCache.m; sourceTree = "<group>"; };
+		6F2917F3149B28C8003E2AD2 /* ASIFormDataRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASIFormDataRequest.h; sourceTree = "<group>"; };
+		6F2917F4149B28C8003E2AD2 /* ASIFormDataRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASIFormDataRequest.m; sourceTree = "<group>"; };
+		6F2917F5149B28C8003E2AD2 /* ASIHTTPRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASIHTTPRequest.h; sourceTree = "<group>"; };
+		6F2917F6149B28C8003E2AD2 /* ASIHTTPRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASIHTTPRequest.m; sourceTree = "<group>"; };
+		6F2917F7149B28C8003E2AD2 /* ASIHTTPRequestConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASIHTTPRequestConfig.h; sourceTree = "<group>"; };
+		6F2917F8149B28C8003E2AD2 /* ASIHTTPRequestDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASIHTTPRequestDelegate.h; sourceTree = "<group>"; };
+		6F2917F9149B28C8003E2AD2 /* ASIInputStream.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASIInputStream.h; sourceTree = "<group>"; };
+		6F2917FA149B28C8003E2AD2 /* ASIInputStream.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASIInputStream.m; sourceTree = "<group>"; };
+		6F2917FB149B28C8003E2AD2 /* ASINetworkQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASINetworkQueue.h; sourceTree = "<group>"; };
+		6F2917FC149B28C8003E2AD2 /* ASINetworkQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ASINetworkQueue.m; sourceTree = "<group>"; };
+		6F2917FD149B28C8003E2AD2 /* ASIProgressDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ASIProgressDelegate.h; sourceTree = "<group>"; };
+		6F2917FF149B28C8003E2AD2 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
+		6F291800149B28C8003E2AD2 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
+		6F291802149B28C8003E2AD2 /* WBGameEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBGameEngine.h; sourceTree = "<group>"; };
+		6F291803149B28C8003E2AD2 /* WBGameEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBGameEngine.m; sourceTree = "<group>"; };
+		6F291804149B28C8003E2AD2 /* WBOauthCore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBOauthCore.h; sourceTree = "<group>"; };
+		6F291805149B28C8003E2AD2 /* WBOauthView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBOauthView.h; sourceTree = "<group>"; };
+		6F291806149B28C8003E2AD2 /* WBOauthView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBOauthView.m; sourceTree = "<group>"; };
+		6F291808149B28C8003E2AD2 /* WBGameApiManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBGameApiManager.h; sourceTree = "<group>"; };
+		6F291809149B28C8003E2AD2 /* WBGameApiManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBGameApiManager.m; sourceTree = "<group>"; };
+		6F29180A149B28C8003E2AD2 /* WBGameCenterDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBGameCenterDelegate.h; sourceTree = "<group>"; };
+		6F29180B149B28C8003E2AD2 /* WBSDKBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBSDKBase.h; sourceTree = "<group>"; };
+		6F29180C149B28C8003E2AD2 /* WBGameCenterManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WBGameCenterManager.h; sourceTree = "<group>"; };
+		6F29180D149B28C8003E2AD2 /* WBGameCenterManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WBGameCenterManager.m; sourceTree = "<group>"; };
+		6F29181B149B28F0003E2AD2 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
+		6F29181D149B28FA003E2AD2 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
+		6F29181F149B290E003E2AD2 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		6F291821149B2917003E2AD2 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		6F291823149B2920003E2AD2 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		6F291825149B2927003E2AD2 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		6F291827149B292F003E2AD2 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		6F291829149B2939003E2AD2 /* libz.1.1.3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.1.3.dylib; path = usr/lib/libz.1.1.3.dylib; sourceTree = SDKROOT; };
+		6F29182D149B2C13003E2AD2 /* bg.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = bg.jpg; sourceTree = "<group>"; };
+		6F291830149B36B9003E2AD2 /* WBPropertyList.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = WBPropertyList.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		6F29179F149B243C003E2AD2 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6F29182A149B2939003E2AD2 /* libz.1.1.3.dylib in Frameworks */,
+				6F291828149B292F003E2AD2 /* AVFoundation.framework in Frameworks */,
+				6F291826149B2927003E2AD2 /* MobileCoreServices.framework in Frameworks */,
+				6F291824149B2920003E2AD2 /* Security.framework in Frameworks */,
+				6F291822149B2917003E2AD2 /* SystemConfiguration.framework in Frameworks */,
+				6F291820149B290F003E2AD2 /* QuartzCore.framework in Frameworks */,
+				6F29181E149B28FA003E2AD2 /* CFNetwork.framework in Frameworks */,
+				6F29181C149B28F0003E2AD2 /* MessageUI.framework in Frameworks */,
+				6F2917A7149B243D003E2AD2 /* UIKit.framework in Frameworks */,
+				6F2917A9149B243D003E2AD2 /* Foundation.framework in Frameworks */,
+				6F2917AB149B243D003E2AD2 /* CoreGraphics.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6F2917C2149B243D003E2AD2 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6F2917C7149B243D003E2AD2 /* UIKit.framework in Frameworks */,
+				6F2917C8149B243D003E2AD2 /* Foundation.framework in Frameworks */,
+				6F2917C9149B243D003E2AD2 /* CoreGraphics.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		6F291797149B243C003E2AD2 = {
+			isa = PBXGroup;
+			children = (
+				6F2917E7149B28C8003E2AD2 /* WBLibrary */,
+				6F2917AC149B243D003E2AD2 /* WYXSDKDemo */,
+				6F2917CC149B243D003E2AD2 /* WYXSDKDemoTests */,
+				6F2917A5149B243D003E2AD2 /* Frameworks */,
+				6F2917A3149B243D003E2AD2 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		6F2917A3149B243D003E2AD2 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				6F2917A2149B243D003E2AD2 /* WYXSDKDemo.app */,
+				6F2917C6149B243D003E2AD2 /* WYXSDKDemoTests.octest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		6F2917A5149B243D003E2AD2 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				6F291829149B2939003E2AD2 /* libz.1.1.3.dylib */,
+				6F291827149B292F003E2AD2 /* AVFoundation.framework */,
+				6F291825149B2927003E2AD2 /* MobileCoreServices.framework */,
+				6F291823149B2920003E2AD2 /* Security.framework */,
+				6F291821149B2917003E2AD2 /* SystemConfiguration.framework */,
+				6F29181F149B290E003E2AD2 /* QuartzCore.framework */,
+				6F29181D149B28FA003E2AD2 /* CFNetwork.framework */,
+				6F29181B149B28F0003E2AD2 /* MessageUI.framework */,
+				6F2917A6149B243D003E2AD2 /* UIKit.framework */,
+				6F2917A8149B243D003E2AD2 /* Foundation.framework */,
+				6F2917AA149B243D003E2AD2 /* CoreGraphics.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		6F2917AC149B243D003E2AD2 /* WYXSDKDemo */ = {
+			isa = PBXGroup;
+			children = (
+				6F29182F149B310B003E2AD2 /* AppDelegate */,
+				6F2917BB149B243D003E2AD2 /* WYXSDKDemoViewController.h */,
+				6F2917BC149B243D003E2AD2 /* WYXSDKDemoViewController.m */,
+				6F2917BE149B243D003E2AD2 /* WYXSDKDemoViewController.xib */,
+				6F2917AD149B243D003E2AD2 /* Supporting Files */,
+			);
+			path = WYXSDKDemo;
+			sourceTree = "<group>";
+		};
+		6F2917AD149B243D003E2AD2 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				6F291830149B36B9003E2AD2 /* WBPropertyList.plist */,
+				6F29182D149B2C13003E2AD2 /* bg.jpg */,
+				6F2917AE149B243D003E2AD2 /* WYXSDKDemo-Info.plist */,
+				6F2917AF149B243D003E2AD2 /* InfoPlist.strings */,
+				6F2917B2149B243D003E2AD2 /* WYXSDKDemo-Prefix.pch */,
+				6F2917B3149B243D003E2AD2 /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		6F2917CC149B243D003E2AD2 /* WYXSDKDemoTests */ = {
+			isa = PBXGroup;
+			children = (
+				6F2917D3149B243D003E2AD2 /* WYXSDKDemoTests.h */,
+				6F2917D5149B243D003E2AD2 /* WYXSDKDemoTests.m */,
+				6F2917CD149B243D003E2AD2 /* Supporting Files */,
+			);
+			path = WYXSDKDemoTests;
+			sourceTree = "<group>";
+		};
+		6F2917CD149B243D003E2AD2 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				6F2917CE149B243D003E2AD2 /* WYXSDKDemoTests-Info.plist */,
+				6F2917CF149B243D003E2AD2 /* InfoPlist.strings */,
+				6F2917D2149B243D003E2AD2 /* WYXSDKDemoTests-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		6F2917E7149B28C8003E2AD2 /* WBLibrary */ = {
+			isa = PBXGroup;
+			children = (
+				6F2917E8149B28C8003E2AD2 /* Lib */,
+				6F29180C149B28C8003E2AD2 /* WBGameCenterManager.h */,
+				6F29180D149B28C8003E2AD2 /* WBGameCenterManager.m */,
+			);
+			path = WBLibrary;
+			sourceTree = "<group>";
+		};
+		6F2917E8149B28C8003E2AD2 /* Lib */ = {
+			isa = PBXGroup;
+			children = (
+				6F2917E9149B28C8003E2AD2 /* ASIHttpRequest */,
+				6F291801149B28C8003E2AD2 /* Oauth2.0 */,
+				6F291807149B28C8003E2AD2 /* WBTools */,
+			);
+			path = Lib;
+			sourceTree = "<group>";
+		};
+		6F2917E9149B28C8003E2AD2 /* ASIHttpRequest */ = {
+			isa = PBXGroup;
+			children = (
+				6F2917EA149B28C8003E2AD2 /* ASIAuthenticationDialog.h */,
+				6F2917EB149B28C8003E2AD2 /* ASIAuthenticationDialog.m */,
+				6F2917EC149B28C8003E2AD2 /* ASICacheDelegate.h */,
+				6F2917ED149B28C8003E2AD2 /* ASIDataCompressor.h */,
+				6F2917EE149B28C8003E2AD2 /* ASIDataCompressor.m */,
+				6F2917EF149B28C8003E2AD2 /* ASIDataDecompressor.h */,
+				6F2917F0149B28C8003E2AD2 /* ASIDataDecompressor.m */,
+				6F2917F1149B28C8003E2AD2 /* ASIDownloadCache.h */,
+				6F2917F2149B28C8003E2AD2 /* ASIDownloadCache.m */,
+				6F2917F3149B28C8003E2AD2 /* ASIFormDataRequest.h */,
+				6F2917F4149B28C8003E2AD2 /* ASIFormDataRequest.m */,
+				6F2917F5149B28C8003E2AD2 /* ASIHTTPRequest.h */,
+				6F2917F6149B28C8003E2AD2 /* ASIHTTPRequest.m */,
+				6F2917F7149B28C8003E2AD2 /* ASIHTTPRequestConfig.h */,
+				6F2917F8149B28C8003E2AD2 /* ASIHTTPRequestDelegate.h */,
+				6F2917F9149B28C8003E2AD2 /* ASIInputStream.h */,
+				6F2917FA149B28C8003E2AD2 /* ASIInputStream.m */,
+				6F2917FB149B28C8003E2AD2 /* ASINetworkQueue.h */,
+				6F2917FC149B28C8003E2AD2 /* ASINetworkQueue.m */,
+				6F2917FD149B28C8003E2AD2 /* ASIProgressDelegate.h */,
+				6F2917FE149B28C8003E2AD2 /* Reachablility */,
+			);
+			path = ASIHttpRequest;
+			sourceTree = "<group>";
+		};
+		6F2917FE149B28C8003E2AD2 /* Reachablility */ = {
+			isa = PBXGroup;
+			children = (
+				6F2917FF149B28C8003E2AD2 /* Reachability.h */,
+				6F291800149B28C8003E2AD2 /* Reachability.m */,
+			);
+			path = Reachablility;
+			sourceTree = "<group>";
+		};
+		6F291801149B28C8003E2AD2 /* Oauth2.0 */ = {
+			isa = PBXGroup;
+			children = (
+				6F291802149B28C8003E2AD2 /* WBGameEngine.h */,
+				6F291803149B28C8003E2AD2 /* WBGameEngine.m */,
+				6F291804149B28C8003E2AD2 /* WBOauthCore.h */,
+				6F291805149B28C8003E2AD2 /* WBOauthView.h */,
+				6F291806149B28C8003E2AD2 /* WBOauthView.m */,
+			);
+			path = Oauth2.0;
+			sourceTree = "<group>";
+		};
+		6F291807149B28C8003E2AD2 /* WBTools */ = {
+			isa = PBXGroup;
+			children = (
+				6F291808149B28C8003E2AD2 /* WBGameApiManager.h */,
+				6F291809149B28C8003E2AD2 /* WBGameApiManager.m */,
+				6F29180A149B28C8003E2AD2 /* WBGameCenterDelegate.h */,
+				6F29180B149B28C8003E2AD2 /* WBSDKBase.h */,
+			);
+			path = WBTools;
+			sourceTree = "<group>";
+		};
+		6F29182F149B310B003E2AD2 /* AppDelegate */ = {
+			isa = PBXGroup;
+			children = (
+				6F2917B5149B243D003E2AD2 /* WYXSDKDemoAppDelegate.h */,
+				6F2917B6149B243D003E2AD2 /* WYXSDKDemoAppDelegate.m */,
+				6F2917B8149B243D003E2AD2 /* MainWindow.xib */,
+			);
+			name = AppDelegate;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		6F2917A1149B243C003E2AD2 /* WYXSDKDemo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6F2917D9149B243D003E2AD2 /* Build configuration list for PBXNativeTarget "WYXSDKDemo" */;
+			buildPhases = (
+				6F29179E149B243C003E2AD2 /* Sources */,
+				6F29179F149B243C003E2AD2 /* Frameworks */,
+				6F2917A0149B243C003E2AD2 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = WYXSDKDemo;
+			productName = WYXSDKDemo;
+			productReference = 6F2917A2149B243D003E2AD2 /* WYXSDKDemo.app */;
+			productType = "com.apple.product-type.application";
+		};
+		6F2917C5149B243D003E2AD2 /* WYXSDKDemoTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6F2917DC149B243D003E2AD2 /* Build configuration list for PBXNativeTarget "WYXSDKDemoTests" */;
+			buildPhases = (
+				6F2917C1149B243D003E2AD2 /* Sources */,
+				6F2917C2149B243D003E2AD2 /* Frameworks */,
+				6F2917C3149B243D003E2AD2 /* Resources */,
+				6F2917C4149B243D003E2AD2 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				6F2917CB149B243D003E2AD2 /* PBXTargetDependency */,
+			);
+			name = WYXSDKDemoTests;
+			productName = WYXSDKDemoTests;
+			productReference = 6F2917C6149B243D003E2AD2 /* WYXSDKDemoTests.octest */;
+			productType = "com.apple.product-type.bundle";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		6F291799149B243C003E2AD2 /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = 6F29179C149B243C003E2AD2 /* Build configuration list for PBXProject "WYXSDKDemo" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 6F291797149B243C003E2AD2;
+			productRefGroup = 6F2917A3149B243D003E2AD2 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				6F2917A1149B243C003E2AD2 /* WYXSDKDemo */,
+				6F2917C5149B243D003E2AD2 /* WYXSDKDemoTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		6F2917A0149B243C003E2AD2 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6F2917B1149B243D003E2AD2 /* InfoPlist.strings in Resources */,
+				6F2917BA149B243D003E2AD2 /* MainWindow.xib in Resources */,
+				6F2917C0149B243D003E2AD2 /* WYXSDKDemoViewController.xib in Resources */,
+				6F29182E149B2C13003E2AD2 /* bg.jpg in Resources */,
+				6F291831149B36BA003E2AD2 /* WBPropertyList.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6F2917C3149B243D003E2AD2 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6F2917D1149B243D003E2AD2 /* InfoPlist.strings in Resources */,
+				6F2917D4149B243D003E2AD2 /* WYXSDKDemoTests.h in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		6F2917C4149B243D003E2AD2 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		6F29179E149B243C003E2AD2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6F2917B4149B243D003E2AD2 /* main.m in Sources */,
+				6F2917B7149B243D003E2AD2 /* WYXSDKDemoAppDelegate.m in Sources */,
+				6F2917BD149B243D003E2AD2 /* WYXSDKDemoViewController.m in Sources */,
+				6F29180E149B28C8003E2AD2 /* ASIAuthenticationDialog.m in Sources */,
+				6F29180F149B28C8003E2AD2 /* ASIDataCompressor.m in Sources */,
+				6F291810149B28C8003E2AD2 /* ASIDataDecompressor.m in Sources */,
+				6F291811149B28C8003E2AD2 /* ASIDownloadCache.m in Sources */,
+				6F291812149B28C8003E2AD2 /* ASIFormDataRequest.m in Sources */,
+				6F291813149B28C8003E2AD2 /* ASIHTTPRequest.m in Sources */,
+				6F291814149B28C8003E2AD2 /* ASIInputStream.m in Sources */,
+				6F291815149B28C8003E2AD2 /* ASINetworkQueue.m in Sources */,
+				6F291816149B28C8003E2AD2 /* Reachability.m in Sources */,
+				6F291817149B28C8003E2AD2 /* WBGameEngine.m in Sources */,
+				6F291818149B28C8003E2AD2 /* WBOauthView.m in Sources */,
+				6F291819149B28C8003E2AD2 /* WBGameApiManager.m in Sources */,
+				6F29181A149B28C8003E2AD2 /* WBGameCenterManager.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6F2917C1149B243D003E2AD2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6F2917D6149B243D003E2AD2 /* WYXSDKDemoTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		6F2917CB149B243D003E2AD2 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 6F2917A1149B243C003E2AD2 /* WYXSDKDemo */;
+			targetProxy = 6F2917CA149B243D003E2AD2 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		6F2917AF149B243D003E2AD2 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				6F2917B0149B243D003E2AD2 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		6F2917B8149B243D003E2AD2 /* MainWindow.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				6F2917B9149B243D003E2AD2 /* en */,
+			);
+			name = MainWindow.xib;
+			sourceTree = "<group>";
+		};
+		6F2917BE149B243D003E2AD2 /* WYXSDKDemoViewController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				6F2917BF149B243D003E2AD2 /* en */,
+			);
+			name = WYXSDKDemoViewController.xib;
+			sourceTree = "<group>";
+		};
+		6F2917CF149B243D003E2AD2 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				6F2917D0149B243D003E2AD2 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		6F2917D7149B243D003E2AD2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = DEBUG;
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		6F2917D8149B243D003E2AD2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvmgcc42;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				SDKROOT = iphoneos;
+			};
+			name = Release;
+		};
+		6F2917DA149B243D003E2AD2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "WYXSDKDemo/WYXSDKDemo-Prefix.pch";
+				INFOPLIST_FILE = "WYXSDKDemo/WYXSDKDemo-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		6F2917DB149B243D003E2AD2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "WYXSDKDemo/WYXSDKDemo-Prefix.pch";
+				INFOPLIST_FILE = "WYXSDKDemo/WYXSDKDemo-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				VALIDATE_PRODUCT = YES;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		6F2917DD149B243D003E2AD2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/WYXSDKDemo.app/WYXSDKDemo";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "WYXSDKDemoTests/WYXSDKDemoTests-Prefix.pch";
+				INFOPLIST_FILE = "WYXSDKDemoTests/WYXSDKDemoTests-Info.plist";
+				OTHER_LDFLAGS = (
+					"-framework",
+					SenTestingKit,
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Debug;
+		};
+		6F2917DE149B243D003E2AD2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/WYXSDKDemo.app/WYXSDKDemo";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "WYXSDKDemoTests/WYXSDKDemoTests-Prefix.pch";
+				INFOPLIST_FILE = "WYXSDKDemoTests/WYXSDKDemoTests-Info.plist";
+				OTHER_LDFLAGS = (
+					"-framework",
+					SenTestingKit,
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		6F29179C149B243C003E2AD2 /* Build configuration list for PBXProject "WYXSDKDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6F2917D7149B243D003E2AD2 /* Debug */,
+				6F2917D8149B243D003E2AD2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		6F2917D9149B243D003E2AD2 /* Build configuration list for PBXNativeTarget "WYXSDKDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6F2917DA149B243D003E2AD2 /* Debug */,
+				6F2917DB149B243D003E2AD2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		6F2917DC149B243D003E2AD2 /* Build configuration list for PBXNativeTarget "WYXSDKDemoTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6F2917DD149B243D003E2AD2 /* Debug */,
+				6F2917DE149B243D003E2AD2 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 6F291799149B243C003E2AD2 /* Project object */;
+}
