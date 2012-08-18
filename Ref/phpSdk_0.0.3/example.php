@@ -14,3 +14,4 @@ catch( Exception $e )
 	echo 'ÇëÇó½Ó¿ÚÊ§°Ü:';
 	var_dump($e);
 }
+?>

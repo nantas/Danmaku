@@ -13,7 +13,9 @@ public class HSController : MonoBehaviour
     private string secretKey = "witch777danmaku"; // Edit this value and make sure it's the same as the one stored on the server
     private string addScoreURL = "http://danmaku.comeze.com/addscore.php?"; //be sure to add a ? to your url
     private string highscoreURL = "http://danmaku.comeze.com/display.php";
-    
+    private string wyxPostScoreURL = "http://abitgames.com/webgames/Danmaku/PostUserScore.php?";
+    private string wyxGetGlobalScoreURL = "http://abitgames.com/webgames/Danmaku/GetUserScore.php?";
+       
     // ------------------------------------------------------------------ 
     // Desc: 
     // ------------------------------------------------------------------ 
@@ -54,6 +56,43 @@ public class HSController : MonoBehaviour
     // Desc: 
     // ------------------------------------------------------------------ 
 
+    public IEnumerator PostUserScore( float _score ) {
+        string post_url = wyxPostScoreURL + "rank_id=" + "1" + "&value=" + _score.ToString("##.00");
+        WWW hs_post = new WWW(post_url);
+        yield return hs_post;
+        if (hs_post.error != null)
+        {
+            Debug.Log("There was an error posting the high score: " + hs_post.error);
+        }
+    }
+
+    // ------------------------------------------------------------------ 
+    // Desc: 
+    // ------------------------------------------------------------------ 
+
+    public IEnumerator GetUserScore( exSpriteFont _targetText ) {
+        _targetText.enabled = true;
+        _targetText.text = "loading scores...";
+        string get_url = wyxGetGlobalScoreURL + "rank_id=" + "1";
+        WWW hs_get = new WWW(get_url);
+        yield return hs_get;
+
+        if (hs_get.error != null)
+        {
+            Debug.Log("There was an error getting the high score: " + hs_get.error);
+            _targetText.text = "can't retrieve score. ";
+        }
+        else
+        {
+            _targetText.text = hs_get.text; // this is a GUIText that will display the scores in game.
+            // Debug.Log(hs_get.text);
+        }
+    }
+        
+    // ------------------------------------------------------------------ 
+    // Desc: 
+    // ------------------------------------------------------------------ 
+
     // remember to use StartCoroutine when calling this function!
     public IEnumerator PostScores(string name, int score) //return true for submisstion successful.
     {
@@ -87,6 +126,7 @@ public class HSController : MonoBehaviour
 
     }
 
+    
 
     // ------------------------------------------------------------------ 
     // Desc: 

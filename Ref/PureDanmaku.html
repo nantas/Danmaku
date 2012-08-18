@@ -4,6 +4,11 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 		<title>Unity Web Player | Pure Danmaku</title>
 		<script type="text/javascript" src="http://webplayer.unity3d.com/download_webplayer-3.x/3.0/uo/UnityObject.js"></script>
+
+        <script type="text/javascript" 
+        src="http://game.weibo.com/static/js/v0.3/wyx.connect.js.php">
+        </script>
+
 		<script type="text/javascript">
 		<!--
 		function GetUnity() {
@@ -16,6 +21,15 @@
 			unityObject.embedUnity("unityPlayer", "WebPlayer.unity3d", 960, 640);
 			
 		}
+
+        function GetURL() {
+
+          var unity = GetUnity();
+
+          unity.SendMessage("Game", "AssignURL", document.URL);
+
+        }
+
 		-->
 		</script>
 		<style type="text/css">
@@ -78,6 +92,12 @@
 				</div>
 			</div>
 		</div>
+
+        </br>
+        <p>
+            <iframe src="http://game.weibo.com/home/widget/box?box=friend&appId=2603432055&width=760&title=%E7%94%9F%E5%AD%98%E6%97%B6%E9%97%B4%E6%8E%92%E8%A1%8C%E6%A6%9C&select=1&rankname=生存时间" width="760" height="186" frameborder="no"></iframe>
+        </p>
 		<p class="footer">&laquo; created by <a href="http://abitgames.com" title="More Games on aBit Games">aBit Games</a> &raquo;</p>
 	</body>
 </html>
+

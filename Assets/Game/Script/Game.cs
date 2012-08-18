@@ -46,6 +46,8 @@ public class Game : FSMBase {
     public static GlobalSettings settings = null; 
     public static bool isTestStage { get { return instance == null; } }
 
+    [System.NonSerialized] public SNSMng snsMng;
+
     // ------------------------------------------------------------------ 
     // Desc: 
     // ------------------------------------------------------------------ 
@@ -123,6 +125,7 @@ public class Game : FSMBase {
             return;
 
         instance = this;
+        snsMng = GetComponent<SNSMng>();
         LoadSettings();
 
         //

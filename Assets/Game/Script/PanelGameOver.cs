@@ -40,11 +40,12 @@ public class PanelGameOver : MonoBehaviour {
 
     public IEnumerator SubmitAndShowScore(string _name) {
         // bool result = GlobalSettings.instance.hsController.PostScores (_name + " ", Mathf.FloorToInt(Stage.instance.timer));
-        StartCoroutine(GlobalSettings.instance.hsController.PostScores (_name + " ", Mathf.FloorToInt(Stage.instance.timer)));
+        // StartCoroutine(GlobalSettings.instance.hsController.PostScores (_name + " ", Mathf.FloorToInt(Stage.instance.timer)));
 
         yield return new WaitForSeconds(1.0f);
 
-        StartCoroutine(GlobalSettings.instance.hsController.GetScoresTo(txtScores));
+        // StartCoroutine(GlobalSettings.instance.hsController.GetScoresTo(txtScores));
+        StartCoroutine(GlobalSettings.instance.hsController.GetUserScore(txtScores));
 
         // if (result) {
         //     StartCoroutine(GlobalSettings.instance.hsController.GetScoresTo(txtScores));

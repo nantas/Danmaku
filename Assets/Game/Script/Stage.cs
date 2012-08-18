@@ -108,6 +108,7 @@ public class Stage : FSMBase {
         fsm.State mainLoop = new fsm.State( "mainLoop", stateMachine );
         mainLoop.onEnter += EnterMainLoopState;
         mainLoop.onAction += UpdateMainLoopState;
+        mainLoop.onExit += ExitMainLoopState;
         mainLoop.mode = fsm.State.Mode.Parallel;
 
         fsm.State pause = new fsm.State( "pause", stateMachine );
@@ -300,6 +301,14 @@ public class Stage : FSMBase {
 
     }
 
+    // ------------------------------------------------------------------ 
+    // Desc: 
+    // ------------------------------------------------------------------ 
+
+    protected void ExitMainLoopState ( fsm.State _from, fsm.State _to, fsm.Event _event ) {
+        Screen.showCursor = true;
+    }
+
     ///////////////////////////////////////////////////////////////////////////////
     // Pause state
     ///////////////////////////////////////////////////////////////////////////////
@@ -333,6 +342,7 @@ public class Stage : FSMBase {
         gamePanel.ShowGameOver(); 
         challengeMng.StopChallenges();
         gamePanel.panelGameOver.ShowNamePrompt(true);
+        StartCoroutine(Game.instance.snsMng.SetLeaderBoard(Mathf.FloorToInt(Stage.instance.timer)));
     }
 
     // ------------------------------------------------------------------ 
