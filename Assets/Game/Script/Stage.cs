@@ -343,6 +343,7 @@ public class Stage : FSMBase {
         challengeMng.StopChallenges();
         gamePanel.panelGameOver.ShowNamePrompt(true);
         StartCoroutine(Game.instance.snsMng.SetLeaderBoard(Mathf.FloorToInt(Stage.instance.timer)));
+        StartCoroutine(Game.instance.snsMng.GetUser());
     }
 
     // ------------------------------------------------------------------ 
